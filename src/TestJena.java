@@ -27,7 +27,7 @@ public class TestJena{
         	 //http://dbpedia.org/snorql/?query=PREFIX+dbo%3A+%3Chttp%3A%2F%2Fdbpedia.org%2Fontology%2F%3E%0D%0A%0D%0ASELECT+%3Fname+%3Fbirth+%3Fdeath+%3Fperson+WHERE+{%0D%0A+++++%3Fperson+dbo%3AbirthPlace+%3ABerlin+.%0D%0A+++++%3Fperson+dbo%3AbirthDate+%3Fbirth+.%0D%0A+++++%3Fperson+foaf%3Aname+%3Fname+.%0D%0A+++++%3Fperson+dbo%3AdeathDate+%3Fdeath+.%0D%0A+++++FILTER+%28%3Fbirth+%3C+%221900-01-01%22^^xsd%3Adate%29+.%0D%0A}%0D%0AORDER+BY+%3Fname
         	 //http://dbpedia.org/snorql/
         	 //http://dbpedia.org/OnlineAccess#h28-5
-        	 PropertyConfigurator.configure("C:/Users/Exphoria/Documents/M1/729-BDAvancees/apache-jena-2.11.0/jena-log4j.properties");
+        	 PropertyConfigurator.configure("C:/apache-jena-2.11.0/jena-log4j.properties");
         	 String service = "http://dbpedia.org/sparql";
         	    String query = 
         	    		"PREFIX owl: <http://www.w3.org/2002/07/owl#>"+
