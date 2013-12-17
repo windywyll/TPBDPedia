@@ -11,6 +11,8 @@ import com.hp.hpl.jena.sparql.engine.http.QueryExceptionHTTP;
  
 public class TestJena{
          public static void main( String[] args ) {
+        	 
+        	 Screen scr1= new Screen();
         	/* String service = "http://dbpedia.org/sparql";
              String query = "ASK { }";
              QueryExecution qe = QueryExecutionFactory.sparqlService(service, query);
