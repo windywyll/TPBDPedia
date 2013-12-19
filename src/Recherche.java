@@ -40,6 +40,7 @@ public class Recherche {
 	        {
 		        for (; results.hasNext();) {
 		        		//if(mode != 0)
+		        	tab = new String[3];
 		        		QuerySolution q = (QuerySolution) results.next();
 		        		tab = new String[3];
 		        		if(q.get("artistName")!=null)
