@@ -28,19 +28,39 @@ public class Recherche {
 	    		"PREFIX dbo:<http://dbpedia.org/ontology/> ";
 	}
 	
-	public ArrayList<QuerySolution> executeQuery(String requete)
+	public ArrayList<String> executeQuery(String requete, int mode)
 	{
+		String getter = "";
+		switch(mode)
+		{
+			case 0: 
+				break;
+			case 1: getter = "artist";
+				break;
+			case 2: getter = "album";
+				break;
+			case 3: getter = "genre";
+				break;
+			
+		}
 		String service = "http://dbpedia.org/sparql";
-		ArrayList<QuerySolution> sol = new ArrayList<QuerySolution>();
+		ArrayList<String> sol = new ArrayList<String>();
 		QueryExecution qe = QueryExecutionFactory.sparqlService(service, requete);
 	    try {
 	        ResultSet results = qe.execSelect();
 
-	        for (; results.hasNext();) {
-
-	            sol.add((QuerySolution) results.next());
-
-	            //System.out.println(sol.get("?name"));
+	        if(results.getRowNumber() != 0)
+	        {
+	        	for (; results.hasNext();) {
+	
+		            sol.add(results.next().getLiteral(getter).toString());
+	
+		            //System.out.println(sol.get("?name"));
+		        }
+	        }
+	        else
+	        {
+	        	sol.add("Pas de résultat");
 	        }
 
 	    }catch(Exception e){
@@ -54,7 +74,7 @@ public class Recherche {
 		return sol;
 	}
 	
-	public ArrayList<QuerySolution> rechercheArtiste(String artist){
+	public ArrayList<String> rechercheArtiste(String artist){
 		query = query +
 				"PREFIX agent: <http://dbpedia.org/ontology/Agent>"+
 				"PREFIX band: <http://dbpedia.org/ontology/Band>"+
@@ -68,17 +88,23 @@ public class Recherche {
 				"?artist rdfs:label ?artistName."+
 				"FILTER(lang(?artistName) = 'en')."+
 				"?artist dbpedia2:genre ?artistGenre."+
+<<<<<<< HEAD
 				"FILTER (regex(?artist, 'resource/.*h.*', 'i'))."+
 				"}ORDER BY ?artistName "+
 				"OFFSET 500 " +
 				"LIMIT 200";
+=======
+				"FILTER regex(?bandName, '"+artist+"', 'i')."+
+				"}ORDER BY ?bandName "+
+		 		"LIMIT 100";
+>>>>>>> ff8718ac5c201fec823dce11e61072671da40c6f
 		 
 		
 		
-		return executeQuery(query);
+		return executeQuery(query, 1);
 	}
 	
-	public ArrayList<QuerySolution> rechercheAlbum(String album){
+	public ArrayList<String> rechercheAlbum(String album){
 		
 		query = query +
 				"PREFIX album: <http://dbpedia.org/ontology/MusicalWork> "+
@@ -88,16 +114,15 @@ public class Recherche {
 				"?album rdfs:label ?name."+
 				"FILTER(lang(?name) = 'en')."+
 				"?album dbpedia2:artist ?artist."+
-				"?album <http://dbpedia.org/ontology/recordDate> ?released."+
 				//"FILTER(?released < '1985-01-01'^^xsd:date)."+
-				"FILTER regex(?artistName, '"+album+"')."+
-				"}ORDER BY ?artist"+
+				"FILTER regex(str(?artist), '"+album+"', 'i')."+
+				"}ORDER BY ?artist "+
 				"LIMIT 100";
 		 
-		return executeQuery(query);
+		return executeQuery(query,2);
 	}
 
-	public ArrayList<QuerySolution> rechercheGenre(String genre){
+	public ArrayList<String> rechercheGenre(String genre){
 		query = query +
 				"PREFIX genre: <http://dbpedia.org/ontology/MusicGenre> "+
 				
@@ -105,20 +130,20 @@ public class Recherche {
 				"WHERE {"+
 				"?genre rdf:type genre:."+
 				"?genre dbpedia2:name ?genreName."+
-				"FILTER (regex(str(?genreName), "+genre+") || regex(str(?genreName), "+genre+"))."+
-				"}ORDER BY ?genreName"+
+				"FILTER regex(str(?genreName), "+genre+", 'i')."+
+				"}ORDER BY ?genreName "+
 				"LIMIT 100";
 	
-		return executeQuery(query);
+		return executeQuery(query,3);
 	}
 	
-	public ArrayList<QuerySolution> rechercheGlobale(String objetRecherche){
+	public ArrayList<String> rechercheGlobale(String objetRecherche){
 		query = query +
 				"PREFIX artist: <http://dbpedia.org/ontology/Band>"+
 				"PREFIX album: <http://dbpedia.org/ontology/MusicalWork>"+
 				"PREFIX genre: <http://dbpedia.org/ontology/MusicGenre> ";
 		
-		return executeQuery(query);
+		return executeQuery(query,0);
 	}
 	
 }
