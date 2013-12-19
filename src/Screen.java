@@ -15,21 +15,21 @@ public class Screen extends JFrame{
 		
 			//Conteneur de gauche;
 			private JPanel contGauche = new JPanel();
-				private JLabel titre = new JLabel("MusiPédia"); // Titre
+				private JLabel titre = new JLabel("MusiPedia"); // Titre
 				private JPanel recherche = new JPanel();  // Recherche simple
 				private BufferedImage myPicture; // Logo
-				private JPanel menuAvancé=new JPanel(); // Recherche Avancé
+				private JPanel menuAvancee=new JPanel(); // Recherche Avancï¿½
 					private JPanel rechercheAvancee = new JPanel();
 						private JLabel artisteLabel = new JLabel("Artiste");
-						private JLabel genreLabel = new JLabel("Artiste");
-						private JLabel albumLabel = new JLabel("Artiste");
+						private JLabel genreLabel = new JLabel("Genre");
+						private JLabel albumLabel = new JLabel("Album");
 				private JButton rechercher = new JButton("Rechercher");
 		
  
 
 	public Screen(){
 		
-		this.setTitle("Musique");       //défini le titre
+		this.setTitle("Musique");       //dï¿½fini le titre
 		this.setSize(1600, 800);        //la taille       
 //--------------------------------------------------------------------------------------------------//		
 		
@@ -65,7 +65,7 @@ public class Screen extends JFrame{
 		contGauche.add(recherche);
         
 		
-	      	//Intégration logo
+	      	//Intï¿½gration logo
 			try {
 				myPicture = ImageIO.read(new File("headphone-300.png"));
 				JLabel picLabel = new JLabel(new ImageIcon(myPicture));
@@ -73,16 +73,16 @@ public class Screen extends JFrame{
 			} catch (IOException e) {e.printStackTrace();}
 		
         
-	      //Menu de recherche Avancé
-	        menuAvancé.setMinimumSize(new Dimension(500, 200));
-	        menuAvancé.setPreferredSize(new Dimension(500, 200));
-	        menuAvancé.setMaximumSize(new Dimension(500, 200));
-	        menuAvancé.setLayout(new BoxLayout(menuAvancé,BoxLayout.Y_AXIS));
-	        menuAvancé.setAlignmentX(LEFT_ALIGNMENT);
+	      //Menu de recherche Avancï¿½
+			menuAvancee.setMinimumSize(new Dimension(500, 200));
+	        menuAvancee.setPreferredSize(new Dimension(500, 200));
+	        menuAvancee.setMaximumSize(new Dimension(500, 200));
+	        menuAvancee.setLayout(new BoxLayout(menuAvancee,BoxLayout.Y_AXIS));
+	        menuAvancee.setAlignmentX(LEFT_ALIGNMENT);
 	
-			//Formulaire de recherche Avancée
+			//Formulaire de recherche Avancï¿½e
 	        rechercheAvancee.setLayout(new BoxLayout(rechercheAvancee,BoxLayout.Y_AXIS));
-	        rechercheAvancee.setBorder( BorderFactory.createTitledBorder("Recherche détaillé"));
+	        rechercheAvancee.setBorder( BorderFactory.createTitledBorder("Recherche detaille"));
 	        
 	        	//Artiste
 	        	rechercheAvancee.add(artisteLabel);
@@ -96,10 +96,10 @@ public class Screen extends JFrame{
 				rechercheAvancee.add(albumLabel);
 				rechercheAvancee.add(new JTextField(""));
 				
-			menuAvancé.add(rechercheAvancee);
-			menuAvancé.add(rechercher); //Bouton
+			menuAvancee.add(rechercheAvancee);
+			menuAvancee.add(rechercher); //Bouton
 	    	
-		   contGauche.add(menuAvancé);
+		   contGauche.add(menuAvancee);
 		   pan.add(contGauche);
 	
 	       		
@@ -111,7 +111,7 @@ public class Screen extends JFrame{
 	   
 //--------------------------------------------------------------------------------------------------//		   
 	    
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);; //opération par défaut a la fermeture
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);; //opï¿½ration par dï¿½faut a la fermeture
 	    this.setContentPane(pan);  
 	    this.setVisible(true);
 	 }
