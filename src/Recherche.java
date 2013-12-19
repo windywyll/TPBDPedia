@@ -88,17 +88,10 @@ public class Recherche {
 				"?artist rdfs:label ?artistName."+
 				"FILTER(lang(?artistName) = 'en')."+
 				"?artist dbpedia2:genre ?artistGenre."+
-<<<<<<< HEAD
-				"FILTER (regex(?artist, 'resource/.*h.*', 'i'))."+
+				"FILTER (regex(?artist, 'resource/.*"+artist+".*', 'i'))."+
 				"}ORDER BY ?artistName "+
 				"OFFSET 500 " +
-				"LIMIT 200";
-=======
-				"FILTER regex(?bandName, '"+artist+"', 'i')."+
-				"FILTER regex(?bandName, '"+artist+"', 'i')."+
-				"}ORDER BY ?bandName "+
 		 		"LIMIT 100";
->>>>>>> ff8718ac5c201fec823dce11e61072671da40c6f
 		 
 		
 		
