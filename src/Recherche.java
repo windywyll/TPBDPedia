@@ -53,15 +53,15 @@ public class Recherche {
 	        {
 		        for (; results.hasNext();) {
 		        		//if(mode != 0)
-		        		System.out.println("passerequete");
-		        		results.next();
-		        		if(((QuerySolution) results).get("artistName")!=null)
-		        			tab[0] = ((QuerySolution) results).get("artistName").toString();
-		        		if(((QuerySolution) results).get("albumName")!=null)
-		        			tab[1] = ((QuerySolution) results).get("albumName").toString();
-		        		if(((QuerySolution) results).get("genreName")!=null)
-		        			tab[2] = ((QuerySolution) results).get("genreName").toString();
-		        		System.out.println(tab[0] +" "+tab[1] +" "+tab[2]);
+		        		QuerySolution q = (QuerySolution) results.next();
+		        		
+		        		if(q.get("artistName")!=null)
+		        			tab[0] = q.get("artistName").toString();
+		        		if(q.get("albumName")!=null)
+		        			tab[1] = q.get("albumName").toString();
+		        		if(q.get("genreName")!=null)
+		        			tab[2] = q.get("genreName").toString();
+		        		//System.out.println(tab[0] +" "+tab[1] +" "+tab[2]);
 		        		sol.add(tab);
 		        		//else
 		        			
