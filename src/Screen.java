@@ -182,58 +182,7 @@ public class Screen extends JFrame implements ActionListener{
 		   
 		   // Pour chaque resultat
 		   this.refresh();
-<<<<<<< HEAD
-		  
-=======
-		   /*
-		    * for(int i=0; i<results.size(); i++){
-			   
-			   String[] resultatTemp = results.get(i); //Recup�re mon tableau de r�sultat
-			   
-			   //Une box par contenu
-			   JPanel resultatListContent = new JPanel();
-			   resultatListContent.setAlignmentX(LEFT_ALIGNMENT);
-			   
-			   BoxLayout bl = new BoxLayout(resultatListContent, BoxLayout.LINE_AXIS);
-			   resultatListContent.setLayout(bl);
-			   resultatListContent.setMinimumSize(new Dimension(1070, 100));
-			   resultatListContent.setMaximumSize(new Dimension(1070, 2000));
 
-			   
-			   //Titre
-			   resultatListContent.setBorder( BorderFactory.createTitledBorder(resultatTemp[0])); 
-			   
-			   //Affichage url
-			   	Image image = null;
-		        try {
-		            URL url = new URL(resultatTemp[1]); //  <----- 2 est un exemple. Dependra de l'index ou se situe l'URL
-		            image = ImageIO.read(url);
-		        } catch (IOException e) {e.printStackTrace();}
-		        
-		        
-		        Image dimg = image.getScaledInstance(100, 100, Image.SCALE_SMOOTH); // Redimensionne l'image
-		        JLabel img = new JLabel(new ImageIcon(dimg)); // Image
-		        img.add(Box.createVerticalStrut(50));
-		        
-		        //Contenu text
-		        JTextArea contenu = new JTextArea(resultatTemp[2]); 
-		        contenu.setLineWrap(true);  /** On souhaite un retour � ligne automatique : */ 
-		       /* contenu.setWrapStyleWord(true);/** On souhaite que les mots ne soient pas coup�s : */ 
-		        //contenu.setEditable(false); 
-		       // contenu.setMinimumSize(new Dimension(700,200));
-		       // contenu.setMaximumSize(new Dimension(900,5000));
-		       // Color originalColor = pan.getBackground(); //Recup�re la couleur de fond
-		        //contenu.setBackground(originalColor); // L'applique au textarea
-		        
-		        
-		        /*resultatListContent.add(img);
-		        resultatListContent.add(contenu);
-		        resultatList.add(resultatListContent);	       
-		       
-		   }*/
-
-
->>>>>>> 7586d01c5124a3f1412cc57b0eb5b23e8679a312
 		   _scroll.setViewportView(resultatList);
 		   pan.add(_scroll);
    
@@ -431,13 +380,10 @@ public class Screen extends JFrame implements ActionListener{
 			
 		}
 		
-<<<<<<< HEAD
-		// Action du bouton pr�c�dent
-=======
+
 		/**
-		 * Récupère les résultats précédent.
+		 * Regroupe les resultats precedents.
 		 */
->>>>>>> 7586d01c5124a3f1412cc57b0eb5b23e8679a312
 		if(e.getSource().equals(this.precedent))
 		{
 			if(offset > 0)
@@ -451,14 +397,10 @@ public class Screen extends JFrame implements ActionListener{
 				precedent.setEnabled(false);
 			}
 		}
-<<<<<<< HEAD
-		// Action bouton Suivant
-=======
-		
 		/**
 		 * Récupère les résultats suivant.
 		 */
->>>>>>> 7586d01c5124a3f1412cc57b0eb5b23e8679a312
+
 		if(e.getSource().equals(this.suivant))
 		{
 				offset += 50;
