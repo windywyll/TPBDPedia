@@ -133,7 +133,25 @@ public class Recherche {
 		query = query +
 				"PREFIX artist: <http://dbpedia.org/ontology/Band>"+
 				"PREFIX album: <http://dbpedia.org/ontology/MusicalWork>"+
-				"PREFIX genre: <http://dbpedia.org/ontology/MusicGenre> ";
+				"PREFIX genre: <http://dbpedia.org/ontology/MusicGenre> "+
+				
+				"SELECT ?albumName ?genreName ?artistName WHERE {"+
+				"{?genre rdf:type <http://dbpedia.org/ontology/MusicGenre>. "+
+				" ?genre rdfs:label ?genreName. "+
+				"FILTER (lang(?genreName) = 'en')."+
+				"FILTER regex(str(?genreName), '"+objetRecherche+"','i').} UNION "+
+				
+				"{?artist rdf:type <http://dbpedia.org/ontology/Band>. "+
+				"?artist rdfs:label ?artistName. "+
+				"FILTER (lang(?artistName) = 'en')."+
+				"FILTER regex(str(?artist), '"+objetRecherche+"','i').} UNION "+
+				
+				"{?album rdf:type <http://dbpedia.org/ontology/MusicalWork>. "+
+				"?album rdfs:label ?albumName. "+
+				"FILTER (lang(?albumName) = 'en')."+
+				"FILTER regex(str(?album), '"+objetRecherche+"','i').}"+
+				"} "+
+				"limit 500";
 		
 		return executeQuery(query,0);
 	}
