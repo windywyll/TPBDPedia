@@ -13,6 +13,10 @@ public class Recherche {
 	
 	private String query;
 	
+	/**
+	 * Instancie la recherche et configure JENA pour communiquer avec DBpedia.
+	 * Commence la requête en mettant tous les prefixes utiles. 
+	 */
 	Recherche(){
 		PropertyConfigurator.configure("C:/apache-jena-2.11.0/jena-log4j.properties");
 		query = "PREFIX owl: <http://www.w3.org/2002/07/owl#>"+
@@ -28,6 +32,13 @@ public class Recherche {
 	    		"PREFIX dbo:<http://dbpedia.org/ontology/> ";
 	}
 	
+	/**
+	 * Envoie la requête, récupère les données 
+	 * et mets les données en forme dans un tableau pour l'affichage.
+	 * @param requete
+	 * @param mode
+	 * @return
+	 */
 	public ArrayList<String[]> executeQuery(String requete, int mode)
 	{
 		String service = "http://dbpedia.org/sparql";
