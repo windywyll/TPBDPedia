@@ -56,20 +56,22 @@ public class Recherche {
 	
 	public ArrayList<QuerySolution> rechercheArtiste(String artist){
 		query = query +
-				"PREFIX band: <http://dbpedia.org/ontology/Band> " +
-				"PREFIX artist: <http://dbpedia.org/ontology/MusicalArtist> " +
+				"PREFIX agent: <http://dbpedia.org/ontology/Agent>"+
+				"PREFIX band: <http://dbpedia.org/ontology/Band>"+
+				"PREFIX artist: <http://dbpedia.org/ontology/MusicalArtist>"+
 				
-				"SELECT distinct ?band ?bandName ?bandGenre ?artist ?artistName ?artistGenre WHERE {"+
-				"?band rdf:type band:."+
-				"?band rdfs:label ?bandName."+
-				"?artist rdf:type artist:."+
-				"?artist rdfs:type ?artistName."+
-				"FILTER(lang(?bandName) = 'en' && lang(?artistName = 'en'))."+
-				"?band dbpedia2:genre ?bandGenre."+
+				"SELECT distinct ?artist ?artistName ?artistGenre WHERE {"+
+				"?artist rdf:type agent:."+
+				"?artist rdfs:subClassOf* ?subclass."+
+				"?subclass rdf:type ?subType."+
+				"FILTER ((?subType= band:) || (?subType= artist:))."+
+				"?artist rdfs:label ?artistName."+
+				"FILTER(lang(?artistName) = 'en')."+
 				"?artist dbpedia2:genre ?artistGenre."+
-				"FILTER (regex(?bandName, '"+artist+"') || regex(?artistName,'"+artist+"'))."+
-				"}ORDER BY ?bandName"+
-		 		"LIMIT 100";
+				"FILTER (regex(?artist, 'resource/.*h.*', 'i'))."+
+				"}ORDER BY ?artistName "+
+				"OFFSET 500 " +
+				"LIMIT 200";
 		 
 		
 		
