@@ -1,5 +1,10 @@
+import java.util.ArrayList;
+
 import org.apache.log4j.PropertyConfigurator;
 
+import com.hp.hpl.jena.query.QueryExecution;
+import com.hp.hpl.jena.query.QueryExecutionFactory;
+import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
 
 
@@ -23,39 +28,116 @@ public class Recherche {
 	    		"PREFIX dbo:<http://dbpedia.org/ontology/> ";
 	}
 	
-	public ResultSet rechercheArtiste(String artist){
-		query = query +
-				"PREFIX artist: <http://dbpedia.org/ontology/Band>";
-		ResultSet result = null;
-		
-		return result;
+	public ArrayList<String> executeQuery(String requete, int mode)
+	{
+		String getter = "";
+		switch(mode)
+		{
+			case 0: 
+				break;
+			case 1: getter = "artist";
+				break;
+			case 2: getter = "album";
+				break;
+			case 3: getter = "genre";
+				break;
+			
+		}
+		String service = "http://dbpedia.org/sparql";
+		ArrayList<String> sol = new ArrayList<String>();
+		QueryExecution qe = QueryExecutionFactory.sparqlService(service, requete);
+	    try {
+	        ResultSet results = qe.execSelect();
+
+	        if(results.getRowNumber() != 0)
+	        {
+	        	for (; results.hasNext();) {
+	
+		            sol.add(results.next().getLiteral(getter).toString());
+	
+		            //System.out.println(sol.get("?name"));
+		        }
+	        }
+	        else
+	        {
+	        	sol.add("Pas de r駸ultat");
+	        }
+
+	    }catch(Exception e){
+
+	        e.printStackTrace();
+	    }
+	    finally {
+
+	       qe.close();
+	    }
+		return sol;
 	}
 	
-	public ResultSet rechercheAlbum(String album){
+	public ArrayList<String> rechercheArtiste(String artist){
+		query = query +
+				"PREFIX agent: <http://dbpedia.org/ontology/Agent>"+
+				"PREFIX band: <http://dbpedia.org/ontology/Band>"+
+				"PREFIX artist: <http://dbpedia.org/ontology/MusicalArtist>"+
+				
+				"SELECT distinct ?artist ?artistName ?artistGenre WHERE {"+
+				"?artist rdf:type agent:."+
+				"?artist rdfs:subClassOf* ?subclass."+
+				"?subclass rdf:type ?subType."+
+				"FILTER ((?subType= band:) || (?subType= artist:))."+
+				"?artist rdfs:label ?artistName."+
+				"FILTER(lang(?artistName) = 'en')."+
+				"?artist dbpedia2:genre ?artistGenre."+
+				"FILTER (regex(?artist, 'resource/.*"+artist+".*', 'i'))."+
+				"}ORDER BY ?artistName "+
+				"OFFSET 500 " +
+		 		"LIMIT 100";
+		 
+		
+		
+		return executeQuery(query, 1);
+	}
+	
+	public ArrayList<String> rechercheAlbum(String album){
 		
 		query = query +
-				"PREFIX album: <http://dbpedia.org/ontology/MusicalWork>";
-		ResultSet result = null;
-		
-		return result;
+				"PREFIX album: <http://dbpedia.org/ontology/MusicalWork> "+
+				
+				"SELECT distinct ?album ?name ?artist WHERE {"+
+				"?album rdf:type album:."+
+				"?album rdfs:label ?name."+
+				"FILTER(lang(?name) = 'en')."+
+				"?album dbpedia2:artist ?artist."+
+				//"FILTER(?released < '1985-01-01'^^xsd:date)."+
+				"FILTER regex(str(?artist), '"+album+"', 'i')."+
+				"}ORDER BY ?artist "+
+				"LIMIT 100";
+		 
+		return executeQuery(query,2);
 	}
 
-	public ResultSet rechercheGenre(String genre){
+	public ArrayList<String> rechercheGenre(String genre){
 		query = query +
-				"PREFIX genre: <http://dbpedia.org/ontology/MusicGenre>";
-	ResultSet result = null;
+				"PREFIX genre: <http://dbpedia.org/ontology/MusicGenre> "+
+				
+			 	"SELECT distinct ?genreName"+
+				"WHERE {"+
+				"?genre rdf:type genre:."+
+				"?genre dbpedia2:name ?genreName."+
+				"FILTER regex(str(?genreName), "+genre+", 'i')."+
+				"}ORDER BY ?genreName "+
+				"LIMIT 100";
 	
-	return result;
+		return executeQuery(query,3);
 	}
 	
-	public ResultSet rechercheGlobale(String objetRecherche){
+	public ArrayList<String> rechercheGlobale(String objetRecherche){
 		query = query +
 				"PREFIX artist: <http://dbpedia.org/ontology/Band>"+
 				"PREFIX album: <http://dbpedia.org/ontology/MusicalWork>"+
-				"PREFIX genre: <http://dbpedia.org/ontology/MusicGenre>";
-		ResultSet result = null;
+				"PREFIX genre: <http://dbpedia.org/ontology/MusicGenre> ";
 		
-		return result;
+		return executeQuery(query,0);
 	}
 	
 }

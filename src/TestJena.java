@@ -43,6 +43,19 @@ public class TestJena{
 						"PREFIX dbpedia: <http://dbpedia.org/>"+
 						"PREFIX skos: <http://www.w3.org/2004/02/skos/core#>"+
         	    		"PREFIX dbo:<http://dbpedia.org/ontology/> "+
+        	    		"PREFIX band: <http://dbpedia.org/ontology/Band> " +
+    					"PREFIX artist: <http://dbpedia.org/ontology/MusicalArtist> " +
+    					"PREFIX genre: <http://dbpedia.org/ontology/MusicGenre>"+
+    					"SELECT distinct ?search ?name ?type WHERE {"+
+    					"?search rdfs:subClassOf* owl:Thing."+
+    					"?search rdf:type ?type."+
+    					"FILTER( (?type = band:) || (?type = artist:) || (?type = genre:))."+
+    					"?thing rdfs:label ?name."+
+    					"FILTER(lang(?Name) = 'en')."+
+    					"FILTER (regex(?search, 'resource/.*mot.*', 'i'))."+
+    					"}ORDER BY ?type "+
+    			 		"LIMIT 100";
+						/*
         	    		"	SELECT ?name ?birth ?death ?person WHERE {"+
         	    		"	     ?person dbo:birthPlace :Berlin ."+
         	    		"	     ?person dbo:birthDate ?birth ."+
@@ -50,7 +63,7 @@ public class TestJena{
         	    		"	     ?person dbo:deathDate ?death ."+
         	    		"     FILTER (?birth < '1900-01-01'^^xsd:date) ."+
         	    		"	}"+
-        	    		" 	ORDER BY ?name";
+        	    		" 	ORDER BY ?name";*/
         	    QueryExecution qe = QueryExecutionFactory.sparqlService(service, query);
         	    try {
         	        ResultSet results = qe.execSelect();
