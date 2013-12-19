@@ -28,6 +28,17 @@ public class Recherche {
 				"PREFIX artist: <http://dbpedia.org/ontology/Band>";
 		ResultSet result = null;
 		
+		/*
+		SELECT distinct ?artist ?artistName ?artistGenre WHERE {
+		?artist rdf:type <http://dbpedia.org/ontology/Band>.
+		?artist rdfs:label ?artistName.
+		FILTER(lang(?artistName) = "en").
+		?artist dbpedia2:genre ?artistGenre.
+		FILTER (regex(?artistGenre, "resource/Hard_rock") || (?artistGenre = "Hard Rock"@en)).
+		}ORDER BY ?artistName
+		LIMIT 200
+		 */
+		
 		return result;
 	}
 	
@@ -36,7 +47,17 @@ public class Recherche {
 		query = query +
 				"PREFIX album: <http://dbpedia.org/ontology/MusicalWork>";
 		ResultSet result = null;
-		
+		/*
+		SELECT distinct ?album ?name ?artist WHERE {
+		?album rdf:type <http://dbpedia.org/ontology/MusicalWork>.
+		?album rdfs:label ?name.
+		FILTER(lang(?name) = "en").
+		?album dbpedia2:artist ?artist.
+		?album <http://dbpedia.org/ontology/recordDate> ?released.
+		FILTER(?released < "1985-01-01"^^xsd:date).
+		}ORDER BY ?artist
+		LIMIT 100
+		 */
 		return result;
 	}
 
@@ -44,6 +65,16 @@ public class Recherche {
 		query = query +
 				"PREFIX genre: <http://dbpedia.org/ontology/MusicGenre>";
 	ResultSet result = null;
+	
+	/*
+ 	SELECT distinct ?genreName
+	WHERE {
+	?genre rdf:type <http://dbpedia.org/ontology/MusicGenre>.
+	?genre dbpedia2:name ?genreName.
+	FILTER (regex(str(?genreName), "Hard") || regex(str(?genreName), "hard")).
+	}ORDER BY ?genreName
+	LIMIT 200
+	 */
 	
 	return result;
 	}
