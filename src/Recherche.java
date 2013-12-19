@@ -60,7 +60,7 @@ public class Recherche {
 	        }
 	        else
 	        {
-	        	sol.add("Pas de résultat");
+	        	sol.add("Pas de ré§¸ultat");
 	        }
 
 	    }catch(Exception e){
@@ -94,6 +94,7 @@ public class Recherche {
 				"OFFSET 500 " +
 				"LIMIT 200";
 =======
+				"FILTER regex(?bandName, '"+artist+"', 'i')."+
 				"FILTER regex(?bandName, '"+artist+"', 'i')."+
 				"}ORDER BY ?bandName "+
 		 		"LIMIT 100";
