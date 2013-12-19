@@ -1,5 +1,10 @@
+import java.util.ArrayList;
+
 import org.apache.log4j.PropertyConfigurator;
 
+import com.hp.hpl.jena.query.QueryExecution;
+import com.hp.hpl.jena.query.QueryExecutionFactory;
+import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
 
 
@@ -23,70 +28,95 @@ public class Recherche {
 	    		"PREFIX dbo:<http://dbpedia.org/ontology/> ";
 	}
 	
-	public ResultSet rechercheArtiste(String artist){
-		query = query +
-				"PREFIX artist: <http://dbpedia.org/ontology/Band>";
-		ResultSet result = null;
-		
-		/*
-		SELECT distinct ?artist ?artistName ?artistGenre WHERE {
-		?artist rdf:type <http://dbpedia.org/ontology/Band>.
-		?artist rdfs:label ?artistName.
-		FILTER(lang(?artistName) = "en").
-		?artist dbpedia2:genre ?artistGenre.
-		FILTER (regex(?artistGenre, "resource/Hard_rock") || (?artistGenre = "Hard Rock"@en)).
-		}ORDER BY ?artistName
-		LIMIT 200
-		 */
-		
-		return result;
+	public ArrayList<QuerySolution> executeQuery(String requete)
+	{
+		String service = "http://dbpedia.org/sparql";
+		ArrayList<QuerySolution> sol = new ArrayList<QuerySolution>();
+		QueryExecution qe = QueryExecutionFactory.sparqlService(service, requete);
+	    try {
+	        ResultSet results = qe.execSelect();
+
+	        for (; results.hasNext();) {
+
+	            sol.add((QuerySolution) results.next());
+
+	            //System.out.println(sol.get("?name"));
+	        }
+
+	    }catch(Exception e){
+
+	        e.printStackTrace();
+	    }
+	    finally {
+
+	       qe.close();
+	    }
+		return sol;
 	}
 	
-	public ResultSet rechercheAlbum(String album){
+	public ArrayList<QuerySolution> rechercheArtiste(String artist){
+		query = query +
+				"PREFIX band: <http://dbpedia.org/ontology/Band> " +
+				"PREFIX artist: <http://dbpedia.org/ontology/MusicalArtist> " +
+				
+				"SELECT distinct ?band ?bandName ?bandGenre ?artist ?artistName ?artistGenre WHERE {"+
+				"?band rdf:type band:."+
+				"?band rdfs:label ?bandName."+
+				"?artist rdf:type artist:."+
+				"?artist rdfs:type ?artistName."+
+				"FILTER(lang(?bandName) = 'en' && lang(?artistName = 'en'))."+
+				"?band dbpedia2:genre ?bandGenre."+
+				"?artist dbpedia2:genre ?artistGenre."+
+				"FILTER (regex(?bandName, '"+artist+"') || regex(?artistName,'"+artist+"'))."+
+				"}ORDER BY ?bandName"+
+		 		"LIMIT 100";
+		 
+		
+		
+		return executeQuery(query);
+	}
+	
+	public ArrayList<QuerySolution> rechercheAlbum(String album){
 		
 		query = query +
-				"PREFIX album: <http://dbpedia.org/ontology/MusicalWork>";
-		ResultSet result = null;
-		/*
-		SELECT distinct ?album ?name ?artist WHERE {
-		?album rdf:type <http://dbpedia.org/ontology/MusicalWork>.
-		?album rdfs:label ?name.
-		FILTER(lang(?name) = "en").
-		?album dbpedia2:artist ?artist.
-		?album <http://dbpedia.org/ontology/recordDate> ?released.
-		FILTER(?released < "1985-01-01"^^xsd:date).
-		}ORDER BY ?artist
-		LIMIT 100
-		 */
-		return result;
+				"PREFIX album: <http://dbpedia.org/ontology/MusicalWork> "+
+				
+				"SELECT distinct ?album ?name ?artist WHERE {"+
+				"?album rdf:type album:."+
+				"?album rdfs:label ?name."+
+				"FILTER(lang(?name) = 'en')."+
+				"?album dbpedia2:artist ?artist."+
+				"?album <http://dbpedia.org/ontology/recordDate> ?released."+
+				//"FILTER(?released < '1985-01-01'^^xsd:date)."+
+				"FILTER regex(?artistName, '"+album+"')."+
+				"}ORDER BY ?artist"+
+				"LIMIT 100";
+		 
+		return executeQuery(query);
 	}
 
-	public ResultSet rechercheGenre(String genre){
+	public ArrayList<QuerySolution> rechercheGenre(String genre){
 		query = query +
-				"PREFIX genre: <http://dbpedia.org/ontology/MusicGenre>";
-	ResultSet result = null;
+				"PREFIX genre: <http://dbpedia.org/ontology/MusicGenre> "+
+				
+			 	"SELECT distinct ?genreName"+
+				"WHERE {"+
+				"?genre rdf:type genre:."+
+				"?genre dbpedia2:name ?genreName."+
+				"FILTER (regex(str(?genreName), "+genre+") || regex(str(?genreName), "+genre+"))."+
+				"}ORDER BY ?genreName"+
+				"LIMIT 100";
 	
-	/*
- 	SELECT distinct ?genreName
-	WHERE {
-	?genre rdf:type <http://dbpedia.org/ontology/MusicGenre>.
-	?genre dbpedia2:name ?genreName.
-	FILTER (regex(str(?genreName), "Hard") || regex(str(?genreName), "hard")).
-	}ORDER BY ?genreName
-	LIMIT 200
-	 */
-	
-	return result;
+		return executeQuery(query);
 	}
 	
-	public ResultSet rechercheGlobale(String objetRecherche){
+	public ArrayList<QuerySolution> rechercheGlobale(String objetRecherche){
 		query = query +
 				"PREFIX artist: <http://dbpedia.org/ontology/Band>"+
 				"PREFIX album: <http://dbpedia.org/ontology/MusicalWork>"+
-				"PREFIX genre: <http://dbpedia.org/ontology/MusicGenre>";
-		ResultSet result = null;
+				"PREFIX genre: <http://dbpedia.org/ontology/MusicGenre> ";
 		
-		return result;
+		return executeQuery(query);
 	}
 	
 }
