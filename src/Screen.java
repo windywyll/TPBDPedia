@@ -37,7 +37,7 @@ public class Screen extends JFrame implements ActionListener{
 					private JButton precedent = new JButton("Precedent");	
 				private int offset = 0;
 				
-				// Mon conteneur général et son scroll
+				// Mon conteneur gï¿½nï¿½ral et son scroll
 				private JPanel resultatList = new JPanel();
 				
 				
@@ -55,7 +55,7 @@ public class Screen extends JFrame implements ActionListener{
 			private JTextArea contenu = new JTextArea(); 
 			private ArrayList<String[]> results= new ArrayList<String[]>();
 			private JScrollPane _scroll = new JScrollPane();
-			Color originalColor ; //Recupère la couleur de fond
+			Color originalColor ; //Recupï¿½re la couleur de fond
 
 	public Screen(){
 		
@@ -175,7 +175,7 @@ public class Screen extends JFrame implements ActionListener{
 		   
 		   
 		   
-		   originalColor = pan.getBackground(); //Recupère la couleur de fond
+		   originalColor = pan.getBackground(); //Recupï¿½re la couleur de fond
 		   _scroll.getVerticalScrollBar().setUnitIncrement(30); //Vitesse de scroll
 		   
 		   resultatList.setLayout(new BoxLayout(resultatList, BoxLayout.PAGE_AXIS));
@@ -188,7 +188,7 @@ public class Screen extends JFrame implements ActionListener{
 		   /*
 		    * for(int i=0; i<results.size(); i++){
 			   
-			   String[] resultatTemp = results.get(i); //Recupère mon tableau de résultat
+			   String[] resultatTemp = results.get(i); //Recupï¿½re mon tableau de rï¿½sultat
 			   
 			   //Une box par contenu
 			   JPanel resultatListContent = new JPanel();
@@ -217,12 +217,12 @@ public class Screen extends JFrame implements ActionListener{
 		        
 		        //Contenu text
 		        JTextArea contenu = new JTextArea(resultatTemp[2]); 
-		        contenu.setLineWrap(true);  /** On souhaite un retour à ligne automatique : */ 
-		       /* contenu.setWrapStyleWord(true);/** On souhaite que les mots ne soient pas coupés : */ 
+		        contenu.setLineWrap(true);  /** On souhaite un retour ï¿½ ligne automatique : */ 
+		       /* contenu.setWrapStyleWord(true);/** On souhaite que les mots ne soient pas coupï¿½s : */ 
 		        //contenu.setEditable(false); 
 		       // contenu.setMinimumSize(new Dimension(700,200));
 		       // contenu.setMaximumSize(new Dimension(900,5000));
-		       // Color originalColor = pan.getBackground(); //Recupère la couleur de fond
+		       // Color originalColor = pan.getBackground(); //Recupï¿½re la couleur de fond
 		        //contenu.setBackground(originalColor); // L'applique au textarea
 		        
 		        
@@ -242,13 +242,15 @@ public class Screen extends JFrame implements ActionListener{
 	    this.setVisible(true);
 	 }
 	
-	
+	/**
+	 * Rafraichit la fenÃªtre pour afficher d'autre rÃ©sultat.
+	 */
 	void refresh(){
 				
 			resultatList.removeAll();
 		 for(int i=0; i<results.size(); i++){
 			   
-			   String[] resultatTemp = results.get(i); //Recupère mon tableau de résultat
+			   String[] resultatTemp = results.get(i); //Recupï¿½re mon tableau de rï¿½sultat
 			   
 			   //Une box par contenu
 			   JPanel resultatListContent = new JPanel();
@@ -282,8 +284,8 @@ public class Screen extends JFrame implements ActionListener{
 		        
 		        //Contenu text
 		        contenu = new JTextArea(resultatTemp[2]); 
-		        contenu.setLineWrap(true);  /** On souhaite un retour à ligne automatique : */ 
-		        contenu.setWrapStyleWord(true);/** On souhaite que les mots ne soient pas coupés : */ 
+		        contenu.setLineWrap(true);  /** On souhaite un retour ï¿½ ligne automatique : */ 
+		        contenu.setWrapStyleWord(true);/** On souhaite que les mots ne soient pas coupï¿½s : */ 
 		        contenu.setEditable(false); 
 		        contenu.setMinimumSize(new Dimension(700,200));
 		        contenu.setMaximumSize(new Dimension(900,5000));
@@ -297,6 +299,10 @@ public class Screen extends JFrame implements ActionListener{
 		   }
 	}
 	
+	/**
+	 * Cette fonction sert Ã  la navigation dans les rÃ©sultats des requÃªtes.
+	 * Elle charge les nouveaux rÃ©sultats dans la liste Ã  afficher.
+	 */
 	void navChangeResults()
 	{
 		switch(styleRecherche)
@@ -316,10 +322,16 @@ public class Screen extends JFrame implements ActionListener{
 		}
 	}
 	
+	/**
+	 * Fonction qui gÃ¨re tous ce que les boutons font.
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		this.results= new ArrayList<String[]>();
 		
+		/**
+		 * Lance la recherche.
+		 */
 		r=new Recherche();
 		if(e.getSource().equals(this.rechercher))
 		{	
@@ -330,6 +342,7 @@ public class Screen extends JFrame implements ActionListener{
 			plus = null;
 			plus2 = null;
 			
+			// VÃ©rifie les champs pour lancer les requÃªtes.
 			if(!valueAlbum.equals("") || !valueArtiste.equals("") || !valueGenre.equals(""))
 			{
 				if(!valueAlbum.equals(""))
@@ -392,6 +405,10 @@ public class Screen extends JFrame implements ActionListener{
 			}
 			
 		}
+		
+		/**
+		 * RÃ©cupÃ¨re les rÃ©sultats prÃ©cÃ©dent.
+		 */
 		if(e.getSource().equals(this.precedent))
 		{
 			if(offset > 0)
@@ -405,6 +422,10 @@ public class Screen extends JFrame implements ActionListener{
 				precedent.setEnabled(false);
 			}
 		}
+		
+		/**
+		 * RÃ©cupÃ¨re les rÃ©sultats suivant.
+		 */
 		if(e.getSource().equals(this.suivant))
 		{
 				offset += 50;
