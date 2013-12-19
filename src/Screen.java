@@ -37,16 +37,25 @@ public class Screen extends JFrame implements ActionListener{
 					private JButton precedent = new JButton("Precedent");	
 				private int offset = 0;
 				
+				// Mon conteneur général et son scroll
+				private JPanel resultatList = new JPanel();
+				
+				
 			//Resultat
 		
-			ArrayList<String[]> results = null;
-			String valueAlbum;
-			String valueArtiste;
-			String valueGenre;
-			String plus;
-			String plus2;
-			int styleRecherche;
-			Recherche r = new Recherche();
+			//private ArrayList<String[]> results = null;
+			private String valueAlbum;
+			private String valueArtiste;
+			private String valueGenre;
+			private String plus;
+			private String plus2;
+			private int styleRecherche;
+			private Recherche r = new Recherche();
+			
+			private JTextArea contenu = new JTextArea(); 
+			private ArrayList<String[]> results= new ArrayList<String[]>();
+			private JScrollPane _scroll = new JScrollPane();
+			Color originalColor ; //Recupère la couleur de fond
 
 	public Screen(){
 		
@@ -135,6 +144,9 @@ public class Screen extends JFrame implements ActionListener{
 				navResults.add(precedent);
 				navResults.add(Box.createRigidArea(new Dimension(70,0)));
 				navResults.add(suivant);
+				
+				
+				
 			
 		   contGauche.add(menuAvancee);
 		   contGauche.add(navResults);
@@ -144,27 +156,26 @@ public class Screen extends JFrame implements ActionListener{
 		   
  //-------------------------------------------Resultat-------------------------------------------//
 		   
-		   ArrayList<String[]> resultat= new ArrayList<String[]>();
+		   
 		   
 		   //Pour l'exemple\\
 		   String[] artiste1= new String[]{"Artiste","http://www.mkyong.com/image/mypic.jpg", "blablabla zfzefzef zefzefze fzefezfezf zef blablabla zfzefzef zefzefzzef ezfzef zefzefblablabla zfzefzef zefzefzef ezfzef zefzef zefzefzefzefze fzefezfezf zef blablabla zfzefzef zefzefzef ezfzef zefzefblablabla zfzefzef zefzefzef ezfzef zefzef zefzefzefzefze fzefezfezf zef blablabla zfzefzef zefzefzef ezfzef zefzefblablabla zfzefzef zefzefzef ezfzef zefzef zefzefzefzefze fzefezfezf zef blablabla zfzefzef zefzefzef ezfzef zefzefblablabla zfzefzef zefzefzef ezfzef zefzef zefzefzefzefze fzefezfezf zef blablabla zfzefzef zefzefzef ezfzef zefzefblablabla zfzefzef zefzefzef ezfzef zefzef zefzefzefzefze fzefezfezf zef blablabla zfzefzef zefzefzef ezfzef zefzefblablabla zfzefzef zefzefzef ezfzef zefzef zefzefzefzefze fzefezfezf zef blablabla zfzefzef zefzefzef ezfzef zefzefblablabla zfzefzef zefzefzef ezfzef zefzef zefzefzefzefze fzefezfezf zef blablabla zfzefzef zefzefzef ezfzef zefzefblablabla zfzefzef zefzefzef ezfzef zefzef zefzefzefzefze fzefezfezf zef blablabla zfzefzef zefzefzef ezfzef zefzefblablabla zfzefzef zefzefzef ezfzef zefzef zefzefzefzefze fzefezfezf zef blablabla zfzefzef zefzefzef ezfzef zefzefblablabla zfzefzef zefzefzef ezfzef zefzef zefzefzefzefze fzefezfezf zef blablabla zfzefzef zefzefzef ezfzef zefzefblablabla zfzefzef zefzefzef ezfzef zefzef zefzefzefzefze fzefezfezf zef blablabla zfzefzef zefzefzef ezfzef zefzefblablabla zfzefzef zefzefzef ezfzef zefzef zefzefzefzefze fzefezfezf zef blablabla zfzefzef zefzefzef ezfzef zefzefblablabla zfzefzef zefzefzef ezfzef zefzef zefzefzefzefze fzefezfezf zef blablabla zfzefzef zefzefzef ezfzef zefzefblablabla zfzefzef zefzefzef ezfzef zefzef zefzefzefzefze fzefezfezf zef blablabla zfzefzef zefzefzef ezfzef zefzefblablabla zfzefzef zefzefzef ezfzef zefzef zefzefzefzefze fzefezfezf zef blablabla zfzefzef zefzefzef ezfzef zefzefblablabla zfzefzef zefzefzef ezfzef zefzef zefzefzefzefze fzefezfezf zef blablabla zfzefzef zefzefzef ezfzef zefzefblablabla zfzefzef zefzefzef ezfzef zefzef zefzefzefzefze fzefezfezf zef blablabla zfzefzef zefzefzef ezfzef zefzefblablabla zfzefzef zefzefzef ezfzef zefzef zefzefzefzefze fzefezfezf zef blablabla zfzefzef zefzefzef ezfzef zefzefblablabla zfzefzef zefzefzef ezfzef zefzef zefzefzefzefze fzefezfezf zef blablabla zfzefzef zefzefzef ezfzef zefzefblablabla zfzefzef zefzefzef ezfzef zefzef zefzefzefzefze fzefezfezf zef blablabla zfzefzef zefzefzef ezfzef zefzefblablabla zfzefzef zefzefzef ezfzef zefzef zefzefzefzefze fzefezfezf zef blablabla zfzefzef zefzefzef ezfzef zefzefzefzefzefzefze fzefezfezf zefblablabla zfzefzef zefzefzef ezfzef zefzef zefzefzefzefze fzefezfezf zefblablabla zfzefzef zefzefzef ezfzef zefzef zefzefzefzefze fzefezfezf zefblablabla zfzefzef zefzefzef ezfzef zefzef zefzefzefzefze fzefezfezf zef"};
 		   String[] artiste2= new String[]{"Artiste","http://www.mkyong.com/image/mypic.jpg", "blablabla  zef zef zef zef zezeezefezfe erzegegrgz rger "};
 		   String[] artiste3= new String[]{"Metalica","http://www.justmusic.fr/wp-content/uploads/2013/05/metallica-promo-photo-1200x12001.jpeg", "blablabla"};
-		   resultat.add(artiste1);
-		   resultat.add(artiste2);
-		   resultat.add(artiste3);
-		   resultat.add(artiste3);
-		   resultat.add(artiste3);
-		   resultat.add(artiste3);
-		   resultat.add(artiste3);
-		   resultat.add(artiste3);
-		   resultat.add(artiste3);
+		   results.add(artiste1);
+		   results.add(artiste2);
+		   results.add(artiste3);
+		   results.add(artiste3);
+		   results.add(artiste3);
+		   results.add(artiste3);
+		   results.add(artiste3);
+		   results.add(artiste3);
+		   results.add(artiste3);
 		   //Pour l'exemple\\
 		   
-		   // Mon conteneur général et son scroll
-		   JPanel resultatList = new JPanel();
 		   
-		   JScrollPane _scroll = new JScrollPane();
+		   
+		   originalColor = pan.getBackground(); //Recupère la couleur de fond
 		   _scroll.getVerticalScrollBar().setUnitIncrement(30); //Vitesse de scroll
 		   
 		   resultatList.setLayout(new BoxLayout(resultatList, BoxLayout.PAGE_AXIS));
@@ -173,9 +184,11 @@ public class Screen extends JFrame implements ActionListener{
 
 		   
 		   // Pour chaque resultat
-		   for(int i=0; i<resultat.size(); i++){
+		   this.refresh();
+		   /*
+		    * for(int i=0; i<results.size(); i++){
 			   
-			   String[] resultatTemp = resultat.get(i); //Recupère mon tableau de résultat
+			   String[] resultatTemp = results.get(i); //Recupère mon tableau de résultat
 			   
 			   //Une box par contenu
 			   JPanel resultatListContent = new JPanel();
@@ -205,19 +218,19 @@ public class Screen extends JFrame implements ActionListener{
 		        //Contenu text
 		        JTextArea contenu = new JTextArea(resultatTemp[2]); 
 		        contenu.setLineWrap(true);  /** On souhaite un retour à ligne automatique : */ 
-		        contenu.setWrapStyleWord(true);/** On souhaite que les mots ne soient pas coupés : */ 
-		        contenu.setEditable(false); 
-		        contenu.setMinimumSize(new Dimension(700,200));
-		        contenu.setMaximumSize(new Dimension(900,5000));
-		        Color originalColor = pan.getBackground(); //Recupère la couleur de fond
-		        contenu.setBackground(originalColor); // L'applique au textarea
+		       /* contenu.setWrapStyleWord(true);/** On souhaite que les mots ne soient pas coupés : */ 
+		        //contenu.setEditable(false); 
+		       // contenu.setMinimumSize(new Dimension(700,200));
+		       // contenu.setMaximumSize(new Dimension(900,5000));
+		       // Color originalColor = pan.getBackground(); //Recupère la couleur de fond
+		        //contenu.setBackground(originalColor); // L'applique au textarea
 		        
 		        
-		        resultatListContent.add(img);
+		        /*resultatListContent.add(img);
 		        resultatListContent.add(contenu);
 		        resultatList.add(resultatListContent);	       
 		       
-		   }
+		   }*/
 
 
 		   _scroll.setViewportView(resultatList);
@@ -228,6 +241,61 @@ public class Screen extends JFrame implements ActionListener{
 	    this.setContentPane(pan);  
 	    this.setVisible(true);
 	 }
+	
+	
+	void refresh(){
+				
+			resultatList.removeAll();
+		 for(int i=0; i<results.size(); i++){
+			   
+			   String[] resultatTemp = results.get(i); //Recupère mon tableau de résultat
+			   
+			   //Une box par contenu
+			   JPanel resultatListContent = new JPanel();
+			   resultatListContent.setAlignmentX(LEFT_ALIGNMENT);
+			   
+			   BoxLayout bl = new BoxLayout(resultatListContent, BoxLayout.LINE_AXIS);
+			   resultatListContent.setLayout(bl);
+			   resultatListContent.setMinimumSize(new Dimension(1070, 100));
+			   resultatListContent.setMaximumSize(new Dimension(1070, 2000));
+
+			   
+			   //Titre
+			   resultatListContent.setBorder( BorderFactory.createTitledBorder(resultatTemp[0])); 
+			   
+			   //Affichage url
+			   	Image image = null;
+			   	if(resultatTemp[1]!=null){
+			        try {
+			            URL url = new URL(resultatTemp[1]); //  <----- 2 est un exemple. Dependra de l'index ou se situe l'URL
+			            image = ImageIO.read(url);
+			        } catch (IOException e) {e.printStackTrace();}
+			        
+			        if(image != null){
+			        	Image dimg = image.getScaledInstance(100, 100, Image.SCALE_SMOOTH); // Redimensionne l'image
+				        JLabel img = new JLabel(new ImageIcon(dimg)); // Image
+				        img.add(Box.createVerticalStrut(50));
+			        }
+			   	}
+		        
+		        
+		        
+		        //Contenu text
+		        contenu = new JTextArea(resultatTemp[2]); 
+		        contenu.setLineWrap(true);  /** On souhaite un retour à ligne automatique : */ 
+		        contenu.setWrapStyleWord(true);/** On souhaite que les mots ne soient pas coupés : */ 
+		        contenu.setEditable(false); 
+		        contenu.setMinimumSize(new Dimension(700,200));
+		        contenu.setMaximumSize(new Dimension(900,5000));
+		        contenu.setBackground(originalColor); // L'applique au textarea
+		        
+		        
+		        //resultatListContent.add(img);
+		        resultatListContent.add(contenu);
+		        resultatList.add(resultatListContent);	       
+		       
+		   }
+	}
 	
 	void navChangeResults()
 	{
@@ -250,7 +318,9 @@ public class Screen extends JFrame implements ActionListener{
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		this.results= new ArrayList<String[]>();
 		
+		r=new Recherche();
 		if(e.getSource().equals(this.rechercher))
 		{	
 			//ArrayList<String[]> results = null;
@@ -262,24 +332,23 @@ public class Screen extends JFrame implements ActionListener{
 			
 			if(!valueAlbum.equals("") || !valueArtiste.equals("") || !valueGenre.equals(""))
 			{
-				System.out.println("passe1");
-				if(valueAlbum!="")
+				if(!valueAlbum.equals(""))
 				{
-					if(valueArtiste != "")
+					if(valueArtiste.equals(""))
 					{
 						plus = valueArtiste;
 					}
 					
-					if(valueGenre != "")
+					if(valueGenre.equals(""))
 					{
 						plus2 = valueGenre;
 					}
 					styleRecherche = 1;
 					results = r.rechercheAlbum(valueAlbum, plus, plus2, offset);
 				}
-				else if(valueArtiste!="")
+				else if(!valueArtiste.equals(""))
 				{
-					if(valueGenre!="")
+					if(valueGenre.equals(""))
 					{
 						plus = valueGenre;
 					}
@@ -343,7 +412,8 @@ public class Screen extends JFrame implements ActionListener{
 				this.navChangeResults();
 		}
 		
-		
+		refresh();
+		pan.updateUI();
 		
 	}
 	

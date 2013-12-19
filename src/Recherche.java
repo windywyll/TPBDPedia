@@ -53,7 +53,7 @@ public class Recherche {
 		        		//if(mode != 0)
 		        	tab = new String[5];
 		        		QuerySolution q = (QuerySolution) results.next();
-		        		
+		        		tab = new String[3];
 		        		if(q.get("artistName")!=null)
 		        			tab[0] = q.get("artistName").toString();
 		        		if(q.get("albumName")!=null)
