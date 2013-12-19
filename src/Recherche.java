@@ -97,18 +97,33 @@ public class Recherche {
 	public ArrayList<String[]> rechercheAlbum(String album, String artist, String genre, int offset){
 		
 		query = query +
-				"PREFIX album: <http://dbpedia.org/ontology/MusicalWork> "+
+				"PREFIX album: <http://dbpedia.org/ontology/MusicalWork>"+
+				"PREFIX ont: <http://dbpedia.org/ontology/>"+ 
 				
-				"SELECT distinct ?album ?name ?artist WHERE {"+
+				"SELECT distinct ?name ?artist ?genre ?thumbnail WHERE {"+
 				"?album rdf:type album:."+
-				"?album rdfs:label ?name."+
-				"FILTER(lang(?name) = 'en')."+
-				"?album dbpedia2:artist ?artist."+
-				//"FILTER(?released < '1985-01-01'^^xsd:date)."+
-				"FILTER regex(str(?artist), '"+album+"', 'i')."+
-				"}ORDER BY ?artist "+
-				"OFFSET "+offset+
-				"LIMIT 100";
+				"?album rdfs:label ?name"+
+				"FILTER (lang(?name) = 'en')."+
+				"FILTER regex(?name, '.*"+album+".*', 'i')."+
+				"?album dbpedia2:artist ?artist.";
+				if(artist != null)
+				query = query +
+						"FILTER (regex(?artist, 'resource/.*"+artist+".*', 'i')).";
+				
+				query = query + "?album dbpedia2:genre ?genre.";
+				
+				if(genre != null)
+					query = query + 
+							"FILTER (regex(?genre, 'resource/.*"+genre+".*', 'i')).";
+				// Attention URL abstract sous forme <Url/de/l_image>
+				query = query + 
+						"OPTIONAL{"+
+						"?album ont:thumbnail ?thumbnail."+
+						"}"+
+						"?album ont:abstract ?abstract."+
+						"?album ont:releaseDate ?date."+
+						"}ORDER BY ?artist "+
+						"LIMIT 200";
 		 
 		return executeQuery(query,2);
 	}
