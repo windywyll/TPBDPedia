@@ -38,9 +38,9 @@ public class Screen extends JFrame{
         
         
         //Conteneur de gauche
-        contGauche.setMinimumSize(new Dimension(500, 600));
-        contGauche.setPreferredSize(new Dimension(500, 600));
-        contGauche.setMaximumSize(new Dimension(500, 600));
+        contGauche.setMinimumSize(new Dimension(500, 700));
+        contGauche.setPreferredSize(new Dimension(500, 700));
+        contGauche.setMaximumSize(new Dimension(500, 700));
         contGauche.setLayout(new BoxLayout(contGauche,BoxLayout.Y_AXIS));
         contGauche.setAlignmentX(LEFT_ALIGNMENT);
         contGauche.setAlignmentY(BOTTOM_ALIGNMENT);
