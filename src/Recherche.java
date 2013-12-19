@@ -30,21 +30,8 @@ public class Recherche {
 	
 	public ArrayList<String[]> executeQuery(String requete, int mode)
 	{
-		String getter = "";
-		switch(mode)
-		{
-			case 0: 
-				break;
-			case 1: getter = "artist";
-				break;
-			case 2: getter = "album";
-				break;
-			case 3: getter = "genre";
-				break;
-			
-		}
 		String service = "http://dbpedia.org/sparql";
-		String[] tab = new String[3];
+		String[] tab;
 		ArrayList<String[]> sol = new ArrayList<String[]>();
 		QueryExecution qe = QueryExecutionFactory.sparqlService(service, requete);
 	    try {
@@ -54,7 +41,7 @@ public class Recherche {
 		        for (; results.hasNext();) {
 		        		//if(mode != 0)
 		        		QuerySolution q = (QuerySolution) results.next();
-		        		
+		        		tab = new String[3];
 		        		if(q.get("artistName")!=null)
 		        			tab[0] = q.get("artistName").toString();
 		        		if(q.get("albumName")!=null)
