@@ -35,9 +35,9 @@ public class Recherche {
 	/**
 	 * Envoie la requête, récupère les données 
 	 * et mets les données en forme dans un tableau pour l'affichage.
-	 * @param requete
-	 * @param mode
-	 * @return
+	 * @param requete, la requête à exécuter.
+	 * @param mode, de quelle fonctions vient la requête pour savoir quoi récupérer.
+	 * @return sol, une collection de tableau de String qui contient les résultats de la requête.
 	 */
 	public ArrayList<String[]> executeQuery(String requete, int mode)
 	{
@@ -82,11 +82,19 @@ public class Recherche {
 		return sol;
 	}
 	
+	/**
+	 * Recherche si il existe un artiste qui correspond tout ou en partie au(x) critére(s).
+	 * @param artist, la string à rechercher.
+	 * @param genre, le genre de l'artiste. Facultif, on peut rechercher juste une partie du genre. ex: hard trouvera Hardcore.
+	 * @param offset, combien de résultat la requête doit passer.
+	 * @return retourne une arrayList de String qui contient les résultats de la requête.
+	 */
 	public ArrayList<String[]> rechercheArtiste(String artist, String genre, int offset){
 		query = query +
 				"PREFIX agent: <http://dbpedia.org/ontology/Agent>"+
 				"PREFIX band: <http://dbpedia.org/ontology/Band>"+
 				"PREFIX artist: <http://dbpedia.org/ontology/MusicalArtist>"+
+				"PREFIX ont: <http://dbpedia.org/ontology/>"+
 				
 				"SELECT distinct ?artist ?artistName ?artistGenre ?abstract ?thumbnail WHERE {"+
 				"?artist rdf:type agent:."+
@@ -96,24 +104,33 @@ public class Recherche {
 				"?artist rdfs:label ?artistName."+
 				"FILTER(lang(?artistName) = 'en')."+
 				"?artist dbpedia2:genre ?artistGenre.";
-		if(genre != null)
-		{
-			query = query + "FILTER regex(?artistGenre,'(ressource/)?.*"+genre+".*','i')";
-		}
-				query = query + "?artist dbpedia-owl:abstract ?abstract."+
-				"FILTER (lang(?abstract) = 'en')."+
-				"OPTIONAL{"+
-				"?album ont:thumbnail ?thumbnail."+
-				"}"+
-				"FILTER (regex(?artist, 'resource/.*"+artist+".*', 'i'))."+
-				"}ORDER BY ?artistName "+
-				"OFFSET "+offset+
-		 		"LIMIT 100";
+				if(genre != null)
+				{
+					query = query + "FILTER regex(?artistGenre,'(ressource/)?.*"+genre+".*','i')";
+				}
+				query = query +
+						"FILTER (regex(?artist, 'resource/.*"+artist+".*', 'i'))."+
+						"?artist ont:abstract ?abstract."+
+						"FILTER (lang(?abstract) = 'en')."+
+						"OPTIONAL{"+
+						"?album ont:thumbnail ?thumbnail."+
+						"}"+
+						"}ORDER BY ?artistName "+
+						"OFFSET "+offset+
+				 		"LIMIT 50";
 		
 		
 		return executeQuery(query, 1);
 	}
 	
+	/**
+	 * Recherche si il existe un album qui correspond tout ou en partie au(x) critére(s).
+	 * @param album, l'album à rechercher.
+	 * @param artist, l'artiste de l'album à rechercher. Facultatif. Peut être partiel.
+	 * @param genre, le genre de l'album à rechercher. Facultatif. Peut être partiel.
+	 * @param offset, le nombre de résultats à ignorer.
+	 * @return retourne une arrayList de String qui contient les résultats de la requête.
+	 */
 	public ArrayList<String[]> rechercheAlbum(String album, String artist, String genre, int offset){
 		
 		query = query +
@@ -143,11 +160,17 @@ public class Recherche {
 						"?album ont:abstract ?abstract."+
 						"?album ont:releaseDate ?date."+
 						"}ORDER BY ?artist "+
-						"LIMIT 200";
+						"LIMIT 50";
 		 
 		return executeQuery(query,2);
 	}
-
+	
+	/**
+	 * Recherche si il existe un genre qui correspond tout ou en partie au critére.
+	 * @param genre, le genre à rechercher.
+	 * @param offset, le nombre de résultat à ignorer.
+	 * @return retourne une arrayList de String qui contient les résultats de la requête.
+	 */
 	public ArrayList<String[]> rechercheGenre(String genre, int offset){
 		query = query +
 				"PREFIX genre: <http://dbpedia.org/ontology/MusicGenre> "+
@@ -159,11 +182,16 @@ public class Recherche {
 				"FILTER regex(str(?genreName), "+genre+", 'i')."+
 				"}ORDER BY ?genreName "+
 				"OFFSET "+offset+
-				"LIMIT 100";
+				"LIMIT 50";
 	
 		return executeQuery(query,3);
 	}
 	
+	/**
+	 * Recherche global sur le genre, l'artiste et l'album sans aucune liaison entre eux.
+	 * @param objetRecherche, le terme à rechercher comme partiel ou non.
+	 * @return retourne une arrayList de String qui contient les résultats de la requête.
+	 */
 	public ArrayList<String[]> rechercheGlobale(String objetRecherche){
 		query = query +
 				"PREFIX artist: <http://dbpedia.org/ontology/Band> "+
@@ -186,7 +214,7 @@ public class Recherche {
 				"FILTER (lang(?albumName) = 'en')."+
 				"FILTER regex(str(?album), '"+objetRecherche+"','i').}"+
 				"} order by ?genreName "+
-				"limit 500";
+				"limit 50";
 		
 		
 		return executeQuery(query,0);
