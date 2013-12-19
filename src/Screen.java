@@ -31,14 +31,22 @@ public class Screen extends JFrame implements ActionListener{
 						private JTextField txtArtiste = new JTextField();
 						private JTextField txtGenre = new JTextField();
 						private JTextField txtAlbum = new JTextField();
-						private JButton suivant = new JButton("Suivant");
-						private JButton precedent = new JButton("Precedent");	
 				private JButton rechercher = new JButton("Rechercher");
+				private JPanel navResults = new JPanel();
+					private JButton suivant = new JButton("Suivant");
+					private JButton precedent = new JButton("Precedent");	
 				private int offset = 0;
 				
 			//Resultat
 		
- 
+			ArrayList<String> results = null;
+			String valueAlbum;
+			String valueArtiste;
+			String valueGenre;
+			String plus;
+			String plus2;
+			int styleRecherche;
+			Recherche r = null;
 
 	public Screen(){
 		
@@ -112,8 +120,18 @@ public class Screen extends JFrame implements ActionListener{
 			menuAvancee.add(rechercheAvancee);
 			menuAvancee.add(rechercher); //Bouton
 	    	
+			//Boutons de navigation
+			navResults.setLayout(new BoxLayout(navResults,BoxLayout.X_AXIS));
+			navResults.setAlignmentX(contGauche.LEFT_ALIGNMENT);
+				navResults.add(Box.createRigidArea(new Dimension(100,0)));	
+				navResults.add(precedent);
+				navResults.add(Box.createRigidArea(new Dimension(70,0)));
+				navResults.add(suivant);
+			
 		   contGauche.add(menuAvancee);
+		   contGauche.add(navResults);
 		   pan.add(contGauche);
+		   
 
 		   
  //-------------------------------------------Resultat-------------------------------------------//
@@ -203,17 +221,36 @@ public class Screen extends JFrame implements ActionListener{
 	    this.setVisible(true);
 	 }
 	
+	void navChangeResults()
+	{
+		switch(styleRecherche)
+		{
+			//recherche globlale
+			case 0: results = r.rechercheGlobale(this.txtRecherche.getText());
+				break;
+			//recherche album
+			case 1: results = r.rechercheAlbum(valueAlbum, plus, plus2, offset);
+				break;
+			//recherche artiste
+			case 2: results = r.rechercheArtiste(valueArtiste, plus, offset);
+				break;
+			//recherche genre
+			case 3: results = r.rechercheGenre(valueGenre, offset);
+				break;
+		}
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		
 		if(e.equals(this.rechercher))
 		{
-			Recherche r = null;
 			ArrayList<String> results = null;
-			String valueAlbum = this.txtAlbum.getText();
-			String valueArtiste = this.txtArtiste.getText();
-			String valueGenre = this.txtGenre.getText();
-			String plus = null;
-			String plus2 = null;
+			valueAlbum = this.txtAlbum.getText();
+			valueArtiste = this.txtArtiste.getText();
+			valueGenre = this.txtGenre.getText();
+			plus = null;
+			plus2 = null;
 			
 			if(valueAlbum!=null || valueArtiste!=null || valueGenre!=null)
 			{
@@ -228,6 +265,7 @@ public class Screen extends JFrame implements ActionListener{
 					{
 						plus2 = valueGenre;
 					}
+					styleRecherche = 1;
 					results = r.rechercheAlbum(valueAlbum, plus, plus2, offset);
 				}
 				else if(valueArtiste!=null)
@@ -237,10 +275,12 @@ public class Screen extends JFrame implements ActionListener{
 						plus = valueGenre;
 					}
 					
+					styleRecherche = 2;
 					results = r.rechercheArtiste(valueArtiste, plus, offset);
 				}
 				else
 				{
+					styleRecherche = 3;
 					results = r.rechercheGenre(valueGenre, offset);
 				}
 					
@@ -249,10 +289,34 @@ public class Screen extends JFrame implements ActionListener{
 			{
 				if(this.txtAlbum.getText().isEmpty() && this.txtArtiste.getText().isEmpty() && this.txtGenre.getText().isEmpty())
 				{
+					styleRecherche = 0;
 					results = r.rechercheGlobale(this.txtRecherche.getText());
 				}
 			}
+			if(results!=null && results.size()<=50)
+			{
+				//disable des boutons precedent et suivant
+			}
 		}
+		if(e.getSource().equals(this.precedent))
+		{
+			if(offset > 0)
+			{
+				offset -= 50;
+				this.navChangeResults();
+			}
+			if(offset == 0)
+			{
+				//disable du boutons precedent
+			}
+		}
+		if(e.getSource().equals(this.suivant))
+		{
+				offset += 50;
+				this.navChangeResults();
+		}
+		
+		
 		
 	}
 	
