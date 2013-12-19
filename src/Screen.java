@@ -19,13 +19,20 @@ public class Screen extends JFrame{
 			private JPanel contGauche = new JPanel();
 				private JLabel titre = new JLabel("MusiPedia"); // Titre
 				private JPanel recherche = new JPanel();  // Recherche simple
+				private JTextField txtRecherche = new JTextField(); 
 				private BufferedImage myPicture; // Logo
 				private JPanel menuAvancee=new JPanel(); // Recherche Avancï¿½
 					private JPanel rechercheAvancee = new JPanel();
 						private JLabel artisteLabel = new JLabel("Artiste");
 						private JLabel genreLabel = new JLabel("Genre");
-						private JLabel albumLabel = new JLabel("Album");
+						private JLabel albumLabel = new JLabel("Album");	
+						private JTextField txtArtiste = new JTextField();
+						private JTextField txtGenre = new JTextField();
+						private JTextField txtAlbum = new JTextField();
+						private JButton suivant = new JButton("Suivant");
+						private JButton precedent = new JButton("Precedent");	
 				private JButton rechercher = new JButton("Rechercher");
+				private int offset = 0;
 				
 			//Resultat
 		
@@ -63,7 +70,7 @@ public class Screen extends JFrame{
 	        recherche.setAlignmentX(LEFT_ALIGNMENT); //Algin-left
 	        
         	//Free search
-        	recherche.add(new JTextField(""));
+        	recherche.add(txtRecherche);
         	recherche.add(rechercher); //Bouton
         	
 		contGauche.add(recherche);
@@ -90,15 +97,15 @@ public class Screen extends JFrame{
 	        
 	        	//Artiste
 	        	rechercheAvancee.add(artisteLabel);
-	        	rechercheAvancee.add(new JTextField(""));
+	        	rechercheAvancee.add(txtArtiste);
 	       
 	        	//Genre
 	    		rechercheAvancee.add(genreLabel);
-	    		rechercheAvancee.add(new JTextField(""));
+	    		rechercheAvancee.add(txtGenre);
 		
 	    		//Album
 				rechercheAvancee.add(albumLabel);
-				rechercheAvancee.add(new JTextField(""));
+				rechercheAvancee.add(txtAlbum);
 				
 			menuAvancee.add(rechercheAvancee);
 			menuAvancee.add(rechercher); //Bouton
@@ -109,42 +116,53 @@ public class Screen extends JFrame{
 		   
  //-------------------------------------------Resultat-------------------------------------------//
 		   
-		   		
 		   ArrayList<String[]> resultat= new ArrayList<String[]>();
 		   
 		   //Pour l'exemple\\
-		   String[] artiste1= new String[]{"Artiste","http://www.mkyong.com/image/mypic.jpg", "blablabla zfzefzef zefzefzef ezfzef zefzef zefzefzefzefze fzefezfezf zef "};
+		   String[] artiste1= new String[]{"Artiste","http://www.mkyong.com/image/mypic.jpg", "blablabla zfzefzef zefzefze fzefezfezf zef blablabla zfzefzef zefzefzzef ezfzef zefzefblablabla zfzefzef zefzefzef ezfzef zefzef zefzefzefzefze fzefezfezf zef blablabla zfzefzef zefzefzef ezfzef zefzefblablabla zfzefzef zefzefzef ezfzef zefzef zefzefzefzefze fzefezfezf zef blablabla zfzefzef zefzefzef ezfzef zefzefblablabla zfzefzef zefzefzef ezfzef zefzef zefzefzefzefze fzefezfezf zef blablabla zfzefzef zefzefzef ezfzef zefzefblablabla zfzefzef zefzefzef ezfzef zefzef zefzefzefzefze fzefezfezf zef blablabla zfzefzef zefzefzef ezfzef zefzefblablabla zfzefzef zefzefzef ezfzef zefzef zefzefzefzefze fzefezfezf zef blablabla zfzefzef zefzefzef ezfzef zefzefblablabla zfzefzef zefzefzef ezfzef zefzef zefzefzefzefze fzefezfezf zef blablabla zfzefzef zefzefzef ezfzef zefzefblablabla zfzefzef zefzefzef ezfzef zefzef zefzefzefzefze fzefezfezf zef blablabla zfzefzef zefzefzef ezfzef zefzefblablabla zfzefzef zefzefzef ezfzef zefzef zefzefzefzefze fzefezfezf zef blablabla zfzefzef zefzefzef ezfzef zefzefblablabla zfzefzef zefzefzef ezfzef zefzef zefzefzefzefze fzefezfezf zef blablabla zfzefzef zefzefzef ezfzef zefzefblablabla zfzefzef zefzefzef ezfzef zefzef zefzefzefzefze fzefezfezf zef blablabla zfzefzef zefzefzef ezfzef zefzefblablabla zfzefzef zefzefzef ezfzef zefzef zefzefzefzefze fzefezfezf zef blablabla zfzefzef zefzefzef ezfzef zefzefblablabla zfzefzef zefzefzef ezfzef zefzef zefzefzefzefze fzefezfezf zef blablabla zfzefzef zefzefzef ezfzef zefzefblablabla zfzefzef zefzefzef ezfzef zefzef zefzefzefzefze fzefezfezf zef blablabla zfzefzef zefzefzef ezfzef zefzefblablabla zfzefzef zefzefzef ezfzef zefzef zefzefzefzefze fzefezfezf zef blablabla zfzefzef zefzefzef ezfzef zefzefblablabla zfzefzef zefzefzef ezfzef zefzef zefzefzefzefze fzefezfezf zef blablabla zfzefzef zefzefzef ezfzef zefzefblablabla zfzefzef zefzefzef ezfzef zefzef zefzefzefzefze fzefezfezf zef blablabla zfzefzef zefzefzef ezfzef zefzefblablabla zfzefzef zefzefzef ezfzef zefzef zefzefzefzefze fzefezfezf zef blablabla zfzefzef zefzefzef ezfzef zefzefblablabla zfzefzef zefzefzef ezfzef zefzef zefzefzefzefze fzefezfezf zef blablabla zfzefzef zefzefzef ezfzef zefzefblablabla zfzefzef zefzefzef ezfzef zefzef zefzefzefzefze fzefezfezf zef blablabla zfzefzef zefzefzef ezfzef zefzefblablabla zfzefzef zefzefzef ezfzef zefzef zefzefzefzefze fzefezfezf zef blablabla zfzefzef zefzefzef ezfzef zefzefblablabla zfzefzef zefzefzef ezfzef zefzef zefzefzefzefze fzefezfezf zef blablabla zfzefzef zefzefzef ezfzef zefzefzefzefzefzefze fzefezfezf zefblablabla zfzefzef zefzefzef ezfzef zefzef zefzefzefzefze fzefezfezf zefblablabla zfzefzef zefzefzef ezfzef zefzef zefzefzefzefze fzefezfezf zefblablabla zfzefzef zefzefzef ezfzef zefzef zefzefzefzefze fzefezfezf zef"};
 		   String[] artiste2= new String[]{"Artiste","http://www.mkyong.com/image/mypic.jpg", "blablabla  zef zef zef zef zezeezefezfe erzegegrgz rger "};
 		   String[] artiste3= new String[]{"Metalica","http://www.justmusic.fr/wp-content/uploads/2013/05/metallica-promo-photo-1200x12001.jpeg", "blablabla"};
 		   resultat.add(artiste1);
 		   resultat.add(artiste2);
 		   resultat.add(artiste3);
+		   resultat.add(artiste3);
+		   resultat.add(artiste3);
+		   resultat.add(artiste3);
+		   resultat.add(artiste3);
+		   resultat.add(artiste3);
+		   resultat.add(artiste3);
 		   //Pour l'exemple\\
 		   
 		   // Mon conteneur général et son scroll
 		   JPanel resultatList = new JPanel();
+		   
 		   JScrollPane _scroll = new JScrollPane();
-		   _scroll.getVerticalScrollBar().setUnitIncrement(20); //Vitesse de scroll
+		   _scroll.getVerticalScrollBar().setUnitIncrement(30); //Vitesse de scroll
 		   
 		   resultatList.setLayout(new BoxLayout(resultatList, BoxLayout.PAGE_AXIS));
-		   //resultatList.setLayout(new GridLayout(resultat.size(), 1)); // Défini le nombre de lignes de résultat
+		   resultatList.setAlignmentX(LEFT_ALIGNMENT);
 		   
 
 		   
-		   //Pour chaque resultat
+		   // Pour chaque resultat
 		   for(int i=0; i<resultat.size(); i++){
+			   
 			   String[] resultatTemp = resultat.get(i); //Recupère mon tableau de résultat
 			   
 			   //Une box par contenu
 			   JPanel resultatListContent = new JPanel();
-			   //resultatListContent.setLayout(new GridLayout(1,2));
-			   resultatListContent.setLayout(new BoxLayout(resultatListContent, BoxLayout.LINE_AXIS));
-			   resultatListContent.setBorder( BorderFactory.createTitledBorder(resultatTemp[0])); //Titre
+			   resultatListContent.setAlignmentX(LEFT_ALIGNMENT);
 			   
-			   JPanel resultatListContent2 = new JPanel();
-			   
+			   BoxLayout bl = new BoxLayout(resultatListContent, BoxLayout.LINE_AXIS);
+			   resultatListContent.setLayout(bl);
+			   resultatListContent.setMinimumSize(new Dimension(1070, 100));
+			   resultatListContent.setMaximumSize(new Dimension(1070, 2000));
 
-			   //-------Affichage url
+			   
+			   //Titre
+			   resultatListContent.setBorder( BorderFactory.createTitledBorder(resultatTemp[0])); 
+			   
+			   //Affichage url
 			   	Image image = null;
 		        try {
 		            URL url = new URL(resultatTemp[1]); //  <----- 2 est un exemple. Dependra de l'index ou se situe l'URL
@@ -152,17 +170,28 @@ public class Screen extends JFrame{
 		        } catch (IOException e) {e.printStackTrace();}
 		        
 		        
-		        Image dimg = image.getScaledInstance(350, 400, Image.SCALE_SMOOTH); // Redimensionne l'image
+		        Image dimg = image.getScaledInstance(100, 100, Image.SCALE_SMOOTH); // Redimensionne l'image
 		        JLabel img = new JLabel(new ImageIcon(dimg)); // Image
-		        JLabel titre = new JLabel(resultatTemp[2]); //Contenu text
+		        img.add(Box.createVerticalStrut(50));
+		        
+		        //Contenu text
+		        JTextArea contenu = new JTextArea(resultatTemp[2]); 
+		        contenu.setLineWrap(true);  /** On souhaite un retour à ligne automatique : */ 
+		        contenu.setWrapStyleWord(true);/** On souhaite que les mots ne soient pas coupés : */ 
+		        contenu.setEditable(false); 
+		        contenu.setMinimumSize(new Dimension(700,200));
+		        contenu.setMaximumSize(new Dimension(900,5000));
+		        Color originalColor = pan.getBackground(); //Recupère la couleur de fond
+		        contenu.setBackground(originalColor); // L'applique au textarea
+		        
 		        
 		        resultatListContent.add(img);
-		        resultatListContent.add(titre);
-		        
-		        resultatList.add(resultatListContent);	        
+		        resultatListContent.add(contenu);
+		        resultatList.add(resultatListContent);	       
+		       
 		   }
 
-		   //pan.add(resultatList);
+
 		   _scroll.setViewportView(resultatList);
 		   pan.add(_scroll);
    
