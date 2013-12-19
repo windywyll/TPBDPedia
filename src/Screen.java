@@ -1,4 +1,6 @@
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -9,7 +11,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 
 
-public class Screen extends JFrame{
+public class Screen extends JFrame implements ActionListener{
 	
 	
 	// Ma fenetre
@@ -201,6 +203,58 @@ public class Screen extends JFrame{
 	    this.setVisible(true);
 	 }
 	
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if(e.equals(this.rechercher))
+		{
+			Recherche r = null;
+			ArrayList<String> results = null;
+			String valueAlbum = this.txtAlbum.getText();
+			String valueArtiste = this.txtArtiste.getText();
+			String valueGenre = this.txtGenre.getText();
+			String plus = null;
+			String plus2 = null;
+			
+			if(valueAlbum!=null || valueArtiste!=null || valueGenre!=null)
+			{
+				if(valueAlbum!=null)
+				{
+					if(valueArtiste != null)
+					{
+						plus = valueArtiste;
+					}
+					
+					if(valueGenre != null)
+					{
+						plus2 = valueGenre;
+					}
+					results = r.rechercheAlbum(valueAlbum, plus, plus2, offset);
+				}
+				else if(valueArtiste!=null)
+				{
+					if(valueGenre!=null)
+					{
+						plus = valueGenre;
+					}
+					
+					results = r.rechercheArtiste(valueArtiste, plus, offset);
+				}
+				else
+				{
+					results = r.rechercheGenre(valueGenre, offset);
+				}
+					
+			}
+			else if(!this.txtRecherche.getText().isEmpty())
+			{
+				if(this.txtAlbum.getText().isEmpty() && this.txtArtiste.getText().isEmpty() && this.txtGenre.getText().isEmpty())
+				{
+					results = r.rechercheGlobale(this.txtRecherche.getText());
+				}
+			}
+		}
+		
+	}
 	
 	
 }
