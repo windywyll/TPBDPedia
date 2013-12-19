@@ -39,14 +39,14 @@ public class Screen extends JFrame implements ActionListener{
 				
 			//Resultat
 		
-			ArrayList<String> results = null;
+			ArrayList<String[]> results = null;
 			String valueAlbum;
 			String valueArtiste;
 			String valueGenre;
 			String plus;
 			String plus2;
 			int styleRecherche;
-			Recherche r = null;
+			Recherche r = new Recherche();
 
 	public Screen(){
 		
@@ -80,6 +80,7 @@ public class Screen extends JFrame implements ActionListener{
 	        recherche.setAlignmentX(LEFT_ALIGNMENT); //Algin-left
 	        
         	//Free search
+	        rechercher.addActionListener(this);
         	recherche.add(txtRecherche);
         	recherche.add(rechercher); //Bouton
         	
@@ -123,6 +124,13 @@ public class Screen extends JFrame implements ActionListener{
 			//Boutons de navigation
 			navResults.setLayout(new BoxLayout(navResults,BoxLayout.X_AXIS));
 			navResults.setAlignmentX(contGauche.LEFT_ALIGNMENT);
+			
+			precedent.setEnabled(false);
+			suivant.setEnabled(false);
+				//ajout des listener
+				precedent.addActionListener(this);
+				suivant.addActionListener(this);
+				
 				navResults.add(Box.createRigidArea(new Dimension(100,0)));	
 				navResults.add(precedent);
 				navResults.add(Box.createRigidArea(new Dimension(70,0)));
@@ -243,34 +251,35 @@ public class Screen extends JFrame implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
-		if(e.equals(this.rechercher))
-		{
-			ArrayList<String> results = null;
+		if(e.getSource().equals(this.rechercher))
+		{	
+			//ArrayList<String[]> results = null;
 			valueAlbum = this.txtAlbum.getText();
 			valueArtiste = this.txtArtiste.getText();
 			valueGenre = this.txtGenre.getText();
 			plus = null;
 			plus2 = null;
 			
-			if(valueAlbum!=null || valueArtiste!=null || valueGenre!=null)
+			if(!valueAlbum.equals("") || !valueArtiste.equals("") || !valueGenre.equals(""))
 			{
-				if(valueAlbum!=null)
+				System.out.println("passe1");
+				if(valueAlbum!="")
 				{
-					if(valueArtiste != null)
+					if(valueArtiste != "")
 					{
 						plus = valueArtiste;
 					}
 					
-					if(valueGenre != null)
+					if(valueGenre != "")
 					{
 						plus2 = valueGenre;
 					}
 					styleRecherche = 1;
 					results = r.rechercheAlbum(valueAlbum, plus, plus2, offset);
 				}
-				else if(valueArtiste!=null)
+				else if(valueArtiste!="")
 				{
-					if(valueGenre!=null)
+					if(valueGenre!="")
 					{
 						plus = valueGenre;
 					}
@@ -287,16 +296,32 @@ public class Screen extends JFrame implements ActionListener{
 			}
 			else if(!this.txtRecherche.getText().isEmpty())
 			{
-				if(this.txtAlbum.getText().isEmpty() && this.txtArtiste.getText().isEmpty() && this.txtGenre.getText().isEmpty())
+				if(valueAlbum.equals("") && valueArtiste.equals("") && valueGenre.equals(""))
 				{
 					styleRecherche = 0;
+					System.out.println(this.txtRecherche.getText());
 					results = r.rechercheGlobale(this.txtRecherche.getText());
 				}
+				for(int i = 0; i< results.size();i++)
+				{
+					System.out.println(results.get(i));
+				}
 			}
-			if(results!=null && results.size()<=50)
+			if(results!=null )
 			{
-				//disable des boutons precedent et suivant
+				if( results.size()<=50)
+				{//disable des boutons precedent et suivant
+					precedent.setEnabled(false);
+					suivant.setEnabled(false);
+				}			
+				else
+				{
+					precedent.setEnabled(true);
+					suivant.setEnabled(true);
+				}
+				
 			}
+			
 		}
 		if(e.getSource().equals(this.precedent))
 		{
@@ -308,11 +333,13 @@ public class Screen extends JFrame implements ActionListener{
 			if(offset == 0)
 			{
 				//disable du boutons precedent
+				precedent.setEnabled(false);
 			}
 		}
 		if(e.getSource().equals(this.suivant))
 		{
 				offset += 50;
+				precedent.setEnabled(true);
 				this.navChangeResults();
 		}
 		

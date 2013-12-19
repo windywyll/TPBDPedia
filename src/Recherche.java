@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Collection;
 
 import org.apache.log4j.PropertyConfigurator;
 
@@ -14,8 +15,7 @@ public class Recherche {
 	
 	Recherche(){
 		PropertyConfigurator.configure("C:/apache-jena-2.11.0/jena-log4j.properties");
-		query = 
-	    		"PREFIX owl: <http://www.w3.org/2002/07/owl#>"+
+		query = "PREFIX owl: <http://www.w3.org/2002/07/owl#>"+
 				"PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>"+
 				"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>"+
 				"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"+
@@ -28,7 +28,7 @@ public class Recherche {
 	    		"PREFIX dbo:<http://dbpedia.org/ontology/> ";
 	}
 	
-	public ArrayList<String> executeQuery(String requete, int mode)
+	public ArrayList<String[]> executeQuery(String requete, int mode)
 	{
 		String getter = "";
 		switch(mode)
@@ -44,25 +44,30 @@ public class Recherche {
 			
 		}
 		String service = "http://dbpedia.org/sparql";
-		ArrayList<String> sol = new ArrayList<String>();
+		String[] tab = new String[3];
+		ArrayList<String[]> sol = new ArrayList<String[]>();
 		QueryExecution qe = QueryExecutionFactory.sparqlService(service, requete);
 	    try {
 	        ResultSet results = qe.execSelect();
-
-	        if(results.getRowNumber() != 0)
+	        if(results != null)
 	        {
-	        	for (; results.hasNext();) {
-	
-		            sol.add(results.next().getLiteral(getter).toString());
-	
-		            //System.out.println(sol.get("?name"));
-		        }
+		        for (; results.hasNext();) {
+		        		//if(mode != 0)
+		        		System.out.println("passerequete");
+		        		results.next();
+		        		if(((QuerySolution) results).get("artistName")!=null)
+		        			tab[0] = ((QuerySolution) results).get("artistName").toString();
+		        		if(((QuerySolution) results).get("albumName")!=null)
+		        			tab[1] = ((QuerySolution) results).get("albumName").toString();
+		        		if(((QuerySolution) results).get("genreName")!=null)
+		        			tab[2] = ((QuerySolution) results).get("genreName").toString();
+		        		System.out.println(tab[0] +" "+tab[1] +" "+tab[2]);
+		        		sol.add(tab);
+		        		//else
+		        			
+			            //System.out.println(sol.get("?name"));
+			        }
 	        }
-	        else
-	        {
-	        	sol.add("Pas de résultat");
-	        }
-
 	    }catch(Exception e){
 
 	        e.printStackTrace();
@@ -74,7 +79,7 @@ public class Recherche {
 		return sol;
 	}
 	
-	public ArrayList<String> rechercheArtiste(String artist, String genre, int offset){
+	public ArrayList<String[]> rechercheArtiste(String artist, String genre, int offset){
 		query = query +
 				"PREFIX agent: <http://dbpedia.org/ontology/Agent>"+
 				"PREFIX band: <http://dbpedia.org/ontology/Band>"+
@@ -101,7 +106,7 @@ public class Recherche {
 		return executeQuery(query, 1);
 	}
 	
-	public ArrayList<String> rechercheAlbum(String album, String artist, String genre, int offset){
+	public ArrayList<String[]> rechercheAlbum(String album, String artist, String genre, int offset){
 		
 		query = query +
 				"PREFIX album: <http://dbpedia.org/ontology/MusicalWork> "+
@@ -120,7 +125,7 @@ public class Recherche {
 		return executeQuery(query,2);
 	}
 
-	public ArrayList<String> rechercheGenre(String genre, int offset){
+	public ArrayList<String[]> rechercheGenre(String genre, int offset){
 		query = query +
 				"PREFIX genre: <http://dbpedia.org/ontology/MusicGenre> "+
 				
@@ -136,10 +141,10 @@ public class Recherche {
 		return executeQuery(query,3);
 	}
 	
-	public ArrayList<String> rechercheGlobale(String objetRecherche){
+	public ArrayList<String[]> rechercheGlobale(String objetRecherche){
 		query = query +
-				"PREFIX artist: <http://dbpedia.org/ontology/Band>"+
-				"PREFIX album: <http://dbpedia.org/ontology/MusicalWork>"+
+				"PREFIX artist: <http://dbpedia.org/ontology/Band> "+
+				"PREFIX album: <http://dbpedia.org/ontology/MusicalWork> "+
 				"PREFIX genre: <http://dbpedia.org/ontology/MusicGenre> "+
 				
 				"SELECT ?albumName ?genreName ?artistName WHERE {"+
@@ -157,8 +162,9 @@ public class Recherche {
 				"?album rdfs:label ?albumName. "+
 				"FILTER (lang(?albumName) = 'en')."+
 				"FILTER regex(str(?album), '"+objetRecherche+"','i').}"+
-				"} "+
+				"} order by ?genreName "+
 				"limit 500";
+		
 		
 		return executeQuery(query,0);
 	}
