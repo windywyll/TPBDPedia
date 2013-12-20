@@ -32,6 +32,7 @@ public class Screen extends JFrame implements ActionListener{
 						private JTextField txtGenre = new JTextField();
 						private JTextField txtAlbum = new JTextField();
 				private JButton rechercher = new JButton("Rechercher");
+				private JButton rechercherA = new JButton("Rechercher");
 				private JPanel navResults = new JPanel();
 					private JButton suivant = new JButton("Suivant");
 					private JButton precedent = new JButton("Precedent");	
@@ -83,13 +84,14 @@ public class Screen extends JFrame implements ActionListener{
 	      //Formulaire de recherche simple
 	        recherche.setMinimumSize(new Dimension(500, 80));
 	        recherche.setPreferredSize(new Dimension(500, 80));
-	        recherche.setMaximumSize(new Dimension(500, 80));
+	        recherche.setMaximumSize(new Dimension(500, 100));
 	        recherche.setLayout(new BoxLayout(recherche,BoxLayout.Y_AXIS));
 	        recherche.setBorder( BorderFactory.createTitledBorder("Recherche libre"));
 	        recherche.setAlignmentX(LEFT_ALIGNMENT); //Algin-left
 	        
         	//Free search
 	        rechercher.addActionListener(this);
+	        recherche.add(rechercher);
         	recherche.add(txtRecherche);
         	recherche.add(rechercher); //Bouton
         	
@@ -127,8 +129,9 @@ public class Screen extends JFrame implements ActionListener{
 				rechercheAvancee.add(albumLabel);
 				rechercheAvancee.add(txtAlbum);
 				
+			rechercherA.addActionListener(this);
 			menuAvancee.add(rechercheAvancee);
-			menuAvancee.add(rechercher); //Bouton
+			menuAvancee.add(rechercherA); //Bouton
 	    	
 			//Boutons de navigation
 			navResults.setLayout(new BoxLayout(navResults,BoxLayout.X_AXIS));
@@ -144,20 +147,15 @@ public class Screen extends JFrame implements ActionListener{
 				navResults.add(precedent);
 				navResults.add(Box.createRigidArea(new Dimension(70,0)));
 				navResults.add(suivant);
-				
-				
-				
+							
 			
 		   contGauche.add(menuAvancee);
 		   contGauche.add(navResults);
 		   pan.add(contGauche);
-		   
 
 		   
  //-------------------------------------------Resultat-------------------------------------------//
-		   
-		   
-		   
+		    
 		   //Pour l'exemple\\
 		   String[] artiste1= new String[]{"Artiste","http://www.mkyong.com/image/mypic.jpg", "blablabla zfzefzef zefzefze fzefezfezf zef blablabla zfzefzef zefzefzzef ezfzef zefzefblablabla zfzefzef zefzefzef ezfzef zefzef zefzefzefzefze fzefezfezf zef blablabla zfzefzef zefzefzef ezfzef zefzefblablabla zfzefzef zefzefzef ezfzef zefzef zefzefzefzefze fzefezfezf zef blablabla zfzefzef zefzefzef ezfzef zefzefblablabla zfzefzef zefzefzef ezfzef zefzef zefzefzefzefze fzefezfezf zef blablabla zfzefzef zefzefzef ezfzef zefzefblablabla zfzefzef zefzefzef ezfzef zefzef zefzefzefzefze fzefezfezf zef blablabla zfzefzef zefzefzef ezfzef zefzefblablabla zfzefzef zefzefzef ezfzef zefzef zefzefzefzefze fzefezfezf zef blablabla zfzefzef zefzefzef ezfzef zefzefblablabla zfzefzef zefzefzef ezfzef zefzef zefzefzefzefze fzefezfezf zef blablabla zfzefzef zefzefzef ezfzef zefzefblablabla zfzefzef zefzefzef ezfzef zefzef zefzefzefzefze fzefezfezf zef blablabla zfzefzef zefzefzef ezfzef zefzefblablabla zfzefzef zefzefzef ezfzef zefzef zefzefzefzefze fzefezfezf zef blablabla zfzefzef zefzefzef ezfzef zefzefblablabla zfzefzef zefzefzef ezfzef zefzef zefzefzefzefze fzefezfezf zef blablabla zfzefzef zefzefzef ezfzef zefzefblablabla zfzefzef zefzefzef ezfzef zefzef zefzefzefzefze fzefezfezf zef blablabla zfzefzef zefzefzef ezfzef zefzefblablabla zfzefzef zefzefzef ezfzef zefzef zefzefzefzefze fzefezfezf zef blablabla zfzefzef zefzefzef ezfzef zefzefblablabla zfzefzef zefzefzef ezfzef zefzef zefzefzefzefze fzefezfezf zef blablabla zfzefzef zefzefzef ezfzef zefzefblablabla zfzefzef zefzefzef ezfzef zefzef zefzefzefzefze fzefezfezf zef blablabla zfzefzef zefzefzef ezfzef zefzefblablabla zfzefzef zefzefzef ezfzef zefzef zefzefzefzefze fzefezfezf zef blablabla zfzefzef zefzefzef ezfzef zefzefblablabla zfzefzef zefzefzef ezfzef zefzef zefzefzefzefze fzefezfezf zef blablabla zfzefzef zefzefzef ezfzef zefzefblablabla zfzefzef zefzefzef ezfzef zefzef zefzefzefzefze fzefezfezf zef blablabla zfzefzef zefzefzef ezfzef zefzefblablabla zfzefzef zefzefzef ezfzef zefzef zefzefzefzefze fzefezfezf zef blablabla zfzefzef zefzefzef ezfzef zefzefblablabla zfzefzef zefzefzef ezfzef zefzef zefzefzefzefze fzefezfezf zef blablabla zfzefzef zefzefzef ezfzef zefzefblablabla zfzefzef zefzefzef ezfzef zefzef zefzefzefzefze fzefezfezf zef blablabla zfzefzef zefzefzef ezfzef zefzefblablabla zfzefzef zefzefzef ezfzef zefzef zefzefzefzefze fzefezfezf zef blablabla zfzefzef zefzefzef ezfzef zefzefblablabla zfzefzef zefzefzef ezfzef zefzef zefzefzefzefze fzefezfezf zef blablabla zfzefzef zefzefzef ezfzef zefzefzefzefzefzefze fzefezfezf zefblablabla zfzefzef zefzefzef ezfzef zefzef zefzefzefzefze fzefezfezf zefblablabla zfzefzef zefzefzef ezfzef zefzef zefzefzefzefze fzefezfezf zefblablabla zfzefzef zefzefzef ezfzef zefzef zefzefzefzefze fzefezfezf zef"};
 		   String[] artiste2= new String[]{"Artiste","http://www.mkyong.com/image/mypic.jpg", "blablabla  zef zef zef zef zezeezefezfe erzegegrgz rger "};
@@ -172,8 +170,7 @@ public class Screen extends JFrame implements ActionListener{
 		   results.add(artiste3);
 		   results.add(artiste3);
 		   //Pour l'exemple\\
-		   
-		   
+		      
 		   
 		   originalColor = pan.getBackground(); //Recup�re la couleur de fond
 		   _scroll.getVerticalScrollBar().setUnitIncrement(30); //Vitesse de scroll
@@ -185,53 +182,6 @@ public class Screen extends JFrame implements ActionListener{
 		   
 		   // Pour chaque resultat
 		   this.refresh();
-		   /*
-		    * for(int i=0; i<results.size(); i++){
-			   
-			   String[] resultatTemp = results.get(i); //Recup�re mon tableau de r�sultat
-			   
-			   //Une box par contenu
-			   JPanel resultatListContent = new JPanel();
-			   resultatListContent.setAlignmentX(LEFT_ALIGNMENT);
-			   
-			   BoxLayout bl = new BoxLayout(resultatListContent, BoxLayout.LINE_AXIS);
-			   resultatListContent.setLayout(bl);
-			   resultatListContent.setMinimumSize(new Dimension(1070, 100));
-			   resultatListContent.setMaximumSize(new Dimension(1070, 2000));
-
-			   
-			   //Titre
-			   resultatListContent.setBorder( BorderFactory.createTitledBorder(resultatTemp[0])); 
-			   
-			   //Affichage url
-			   	Image image = null;
-		        try {
-		            URL url = new URL(resultatTemp[1]); //  <----- 2 est un exemple. Dependra de l'index ou se situe l'URL
-		            image = ImageIO.read(url);
-		        } catch (IOException e) {e.printStackTrace();}
-		        
-		        
-		        Image dimg = image.getScaledInstance(100, 100, Image.SCALE_SMOOTH); // Redimensionne l'image
-		        JLabel img = new JLabel(new ImageIcon(dimg)); // Image
-		        img.add(Box.createVerticalStrut(50));
-		        
-		        //Contenu text
-		        JTextArea contenu = new JTextArea(resultatTemp[2]); 
-		        contenu.setLineWrap(true);  /** On souhaite un retour � ligne automatique : */ 
-		       /* contenu.setWrapStyleWord(true);/** On souhaite que les mots ne soient pas coup�s : */ 
-		        //contenu.setEditable(false); 
-		       // contenu.setMinimumSize(new Dimension(700,200));
-		       // contenu.setMaximumSize(new Dimension(900,5000));
-		       // Color originalColor = pan.getBackground(); //Recup�re la couleur de fond
-		        //contenu.setBackground(originalColor); // L'applique au textarea
-		        
-		        
-		        /*resultatListContent.add(img);
-		        resultatListContent.add(contenu);
-		        resultatList.add(resultatListContent);	       
-		       
-		   }*/
-
 
 		   _scroll.setViewportView(resultatList);
 		   pan.add(_scroll);
@@ -266,6 +216,7 @@ public class Screen extends JFrame implements ActionListener{
 			   resultatListContent.setBorder( BorderFactory.createTitledBorder(resultatTemp[0])); 
 			   
 			   //Affichage url
+			   /*
 			   	Image image = null;
 			   	if(resultatTemp[1]!=null){
 			        try {
@@ -278,8 +229,7 @@ public class Screen extends JFrame implements ActionListener{
 				        JLabel img = new JLabel(new ImageIcon(dimg)); // Image
 				        img.add(Box.createVerticalStrut(50));
 			        }
-			   	}
-		        
+			   	}*/
 		        
 		        
 		        //Contenu text
@@ -335,7 +285,44 @@ public class Screen extends JFrame implements ActionListener{
 		r=new Recherche();
 		if(e.getSource().equals(this.rechercher))
 		{	
-			//ArrayList<String[]> results = null;
+			valueAlbum = this.txtAlbum.getText();
+			valueArtiste = this.txtArtiste.getText();
+			valueGenre = this.txtGenre.getText();
+			plus = null;
+			plus2 = null;
+					
+			if(!this.txtRecherche.getText().isEmpty())
+			{
+				if(valueAlbum.equals("") && valueArtiste.equals("") && valueGenre.equals(""))
+				{
+					styleRecherche = 0;
+					System.out.println(this.txtRecherche.getText());
+					results = r.rechercheGlobale(this.txtRecherche.getText());
+				}
+				for(int i = 0; i< results.size();i++)
+				{
+					System.out.println(results.get(i));
+				}
+			}
+			if(results!=null )
+			{
+				if( results.size()<=50)
+				{//disable des boutons precedent et suivant
+					precedent.setEnabled(false);
+					suivant.setEnabled(false);
+				}			
+				else
+				{
+					precedent.setEnabled(true);
+					suivant.setEnabled(true);
+				}	
+			}
+			
+		}
+		
+		// Action lorsqu'on fait un recherche avanc�.
+		if(e.getSource().equals(this.rechercherA))
+		{	
 			valueAlbum = this.txtAlbum.getText();
 			valueArtiste = this.txtArtiste.getText();
 			valueGenre = this.txtGenre.getText();
@@ -376,19 +363,6 @@ public class Screen extends JFrame implements ActionListener{
 				}
 					
 			}
-			else if(!this.txtRecherche.getText().isEmpty())
-			{
-				if(valueAlbum.equals("") && valueArtiste.equals("") && valueGenre.equals(""))
-				{
-					styleRecherche = 0;
-					System.out.println(this.txtRecherche.getText());
-					results = r.rechercheGlobale(this.txtRecherche.getText());
-				}
-				for(int i = 0; i< results.size();i++)
-				{
-					System.out.println(results.get(i));
-				}
-			}
 			if(results!=null )
 			{
 				if( results.size()<=50)
@@ -406,8 +380,9 @@ public class Screen extends JFrame implements ActionListener{
 			
 		}
 		
+
 		/**
-		 * Récupère les résultats précédent.
+		 * Regroupe les resultats precedents.
 		 */
 		if(e.getSource().equals(this.precedent))
 		{
@@ -422,10 +397,10 @@ public class Screen extends JFrame implements ActionListener{
 				precedent.setEnabled(false);
 			}
 		}
-		
 		/**
 		 * Récupère les résultats suivant.
 		 */
+
 		if(e.getSource().equals(this.suivant))
 		{
 				offset += 50;
@@ -433,6 +408,7 @@ public class Screen extends JFrame implements ActionListener{
 				this.navChangeResults();
 		}
 		
+		//Reafiche tout les resultats
 		refresh();
 		pan.updateUI();
 		
