@@ -53,18 +53,16 @@ public class Recherche {
 		        		//if(mode != 0)
 		        	tab = new String[5];
 		        		QuerySolution q = (QuerySolution) results.next();
-		        		tab = new String[3];
 		        		if(q.get("artistName")!=null)
 		        			tab[0] = q.get("artistName").toString();
-		        		if(q.get("albumName")!=null)
-		        			tab[1] = q.get("albumName").toString();
-		        		if(q.get("genreName")!=null)
-		        			tab[2] = q.get("genreName").toString();
-		        		if(q.get("abstract")!=null)
-		        			tab[3] = q.get("abstract").toString();
 		        		if(q.get("thumbnail")!=null)
-		        			tab[4] = q.get("thumbnail").toString();
-		        		//System.out.println(tab[0] +" "+tab[1] +" "+tab[2]);
+		        			tab[1] = q.get("thumbnail").toString();
+		        		if(q.get("abstract")!=null)
+		        			tab[2] = q.get("abstract").toString();
+		        		if(q.get("genreName")!=null)
+		        			tab[3] = q.get("genreName").toString();
+		        		if(q.get("albumName")!=null)
+		        			tab[4] = q.get("albumName").toString();
 		        		sol.add(tab);
 		        		//else
 		        			
@@ -106,14 +104,14 @@ public class Recherche {
 				"?artist dbpedia2:genre ?artistGenre.";
 				if(genre != null)
 				{
-					query = query + "FILTER regex(?artistGenre,'(ressource/)?.*"+genre+".*','i')";
+					query = query + "FILTER regex(?artistGenre,'(ressource/)?.*"+genre+".*','i').";
 				}
 				query = query +
 						"FILTER (regex(?artist, 'resource/.*"+artist+".*', 'i'))."+
 						"?artist ont:abstract ?abstract."+
 						"FILTER (lang(?abstract) = 'en')."+
 						"OPTIONAL{"+
-						"?album ont:thumbnail ?thumbnail."+
+						"?artist ont:thumbnail ?thumbnail."+
 						"}"+
 						"}ORDER BY ?artistName "+
 						"OFFSET "+offset+
@@ -139,7 +137,7 @@ public class Recherche {
 				
 				"SELECT distinct ?name ?artist ?genre ?abstract ?thumbnail WHERE {"+
 				"?album rdf:type album:."+
-				"?album rdfs:label ?name"+
+				"?album rdfs:label ?name."+
 				"FILTER (lang(?name) = 'en')."+
 				"FILTER regex(?name, '.*"+album+".*', 'i')."+
 				"?album dbpedia2:artist ?artist.";
@@ -151,7 +149,7 @@ public class Recherche {
 				
 				if(genre != null)
 					query = query + 
-							"FILTER (regex(?genre, 'resource/.*"+genre+".*', 'i')).";
+							"FILTER (regex(?genre, 'resource/.*"+genre+".*', 'i')). ";
 				// Attention URL abstract sous forme <Url/de/l_image>
 				query = query + 
 						"OPTIONAL{"+
@@ -179,7 +177,7 @@ public class Recherche {
 				"WHERE {"+
 				"?genre rdf:type genre:."+
 				"?genre dbpedia2:name ?genreName."+
-				"FILTER regex(str(?genreName), "+genre+", 'i')."+
+				"FILTER regex(str(?genreName), '"+genre+"', 'i')."+
 				"}ORDER BY ?genreName "+
 				"OFFSET "+offset+
 				"LIMIT 50";
